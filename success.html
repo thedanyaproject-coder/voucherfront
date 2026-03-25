@@ -11,7 +11,7 @@
 
     body {
       margin: 0;
-      padding: 30px 15px;
+      padding: 24px;
       font-family: Georgia, "Times New Roman", serif;
       background:
         radial-gradient(circle at top left, rgba(255,255,255,0.18), transparent 30%),
@@ -22,14 +22,14 @@
     }
 
     .wrap {
-      max-width: 1100px;
+      max-width: 1400px;
       margin: 0 auto;
     }
 
     .topbox {
       background: #fffaf0;
       border-radius: 20px;
-      padding: 28px;
+      padding: 24px;
       box-shadow: 0 20px 55px rgba(0,0,0,0.28);
       margin-bottom: 24px;
       text-align: center;
@@ -38,7 +38,7 @@
     .topbox h1 {
       margin: 0 0 12px;
       color: #4a2e1d;
-      font-size: 38px;
+      font-size: 36px;
     }
 
     .topbox p {
@@ -50,7 +50,7 @@
     .voucher {
       position: relative;
       background:
-        linear-gradient(rgba(255,248,230,0.96), rgba(245,232,202,0.96)),
+        linear-gradient(rgba(255,248,230,0.97), rgba(245,232,202,0.97)),
         repeating-linear-gradient(
           0deg,
           rgba(120,85,50,0.03) 0px,
@@ -60,9 +60,10 @@
         );
       border-radius: 24px;
       box-shadow: 0 22px 60px rgba(0,0,0,0.28);
-      padding: 40px;
+      padding: 34px;
       overflow: hidden;
       border: 2px solid rgba(109, 67, 41, 0.22);
+      min-height: 700px;
     }
 
     .voucher::before {
@@ -74,26 +75,41 @@
       pointer-events: none;
     }
 
-    .voucher::after {
-      content: "✦";
-      position: absolute;
-      right: 34px;
-      top: 20px;
-      font-size: 60px;
-      color: rgba(125, 85, 50, 0.16);
+    .voucher-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 28px;
+      align-items: stretch;
+      min-height: 620px;
+    }
+
+    .voucher-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 8px 10px 8px 8px;
+    }
+
+    .voucher-right {
+      border-left: 2px dashed rgba(109, 67, 41, 0.28);
+      padding: 10px 10px 10px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .voucher-head {
-      text-align: center;
-      margin-bottom: 24px;
+      text-align: left;
+      margin-bottom: 18px;
     }
 
     .voucher-title {
-      font-size: 46px;
+      font-size: 44px;
       letter-spacing: 2px;
       color: #4a2e1d;
       text-transform: uppercase;
       margin: 0;
+      line-height: 1.1;
     }
 
     .voucher-sub {
@@ -104,39 +120,31 @@
     }
 
     .voucher-amount {
-      text-align: center;
-      font-size: 78px;
+      font-size: 86px;
       font-weight: bold;
       color: #6d4329;
-      margin: 28px 0 20px;
+      margin: 20px 0 18px;
+      line-height: 1;
       text-shadow: 0 2px 0 rgba(255,255,255,0.55);
     }
 
     .voucher-message {
-      text-align: center;
-      font-size: 24px;
+      font-size: 28px;
       color: #5a3928;
-      line-height: 1.6;
-      max-width: 780px;
-      margin: 0 auto 26px;
+      line-height: 1.5;
       white-space: pre-wrap;
+      margin: 18px 0 28px;
     }
 
-    .meta {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 16px;
-      margin-top: 24px;
-    }
-
-    .meta-box {
-      background: rgba(255,255,255,0.55);
-      border: 1px solid rgba(109, 67, 41, 0.15);
+    .voucher-code-box {
+      background: rgba(255,255,255,0.58);
+      border: 1px solid rgba(109, 67, 41, 0.18);
       border-radius: 16px;
       padding: 18px;
+      margin-top: 12px;
     }
 
-    .meta-label {
+    .voucher-code-label {
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -144,18 +152,48 @@
       margin-bottom: 8px;
     }
 
-    .meta-value {
+    .voucher-code-value {
+      font-size: 28px;
+      font-weight: bold;
+      color: #4a2e1d;
+      word-break: break-word;
+    }
+
+    .side-box {
+      background: rgba(255,255,255,0.55);
+      border: 1px solid rgba(109, 67, 41, 0.15);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .side-label {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #8a674d;
+      margin-bottom: 8px;
+    }
+
+    .side-value {
       font-size: 22px;
       color: #4a2e1d;
       word-break: break-word;
     }
 
+    .right-title {
+      font-size: 24px;
+      color: #4a2e1d;
+      margin: 0 0 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
     .footer-note {
-      text-align: center;
-      margin-top: 32px;
-      font-size: 16px;
+      font-size: 15px;
       color: #7a5a45;
       line-height: 1.7;
+      margin-top: 12px;
     }
 
     .actions {
@@ -188,33 +226,36 @@
       color: #f0e4d4;
     }
 
-    @media (max-width: 860px) {
-      .voucher {
-        padding: 26px;
+    @media (max-width: 980px) {
+      .voucher-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .voucher-right {
+        border-left: none;
+        border-top: 2px dashed rgba(109, 67, 41, 0.28);
+        padding: 24px 0 0 0;
       }
 
       .voucher-title {
         font-size: 34px;
       }
 
-      .voucher-sub {
-        font-size: 22px;
-      }
-
       .voucher-amount {
-        font-size: 54px;
+        font-size: 56px;
       }
 
       .voucher-message {
-        font-size: 20px;
-      }
-
-      .meta {
-        grid-template-columns: 1fr;
+        font-size: 22px;
       }
     }
 
     @media print {
+      @page {
+        size: A4 landscape;
+        margin: 10mm;
+      }
+
       body {
         background: white;
         padding: 0;
@@ -231,8 +272,11 @@
       .voucher {
         box-shadow: none;
         border: 2px solid rgba(109, 67, 41, 0.4);
-        margin: 0;
-        page-break-inside: avoid;
+        min-height: auto;
+      }
+
+      .voucher-grid {
+        min-height: auto;
       }
     }
   </style>
@@ -247,7 +291,7 @@
     <div id="voucherArea"></div>
 
     <div class="print-note">
-      Tipp: Nutzen Sie “Drucken” und speichern Sie den Gutschein als PDF.
+      Tipp: Nutzen Sie “Drucken” und speichern Sie den Gutschein als PDF im Querformat.
     </div>
   </div>
 
@@ -293,6 +337,8 @@
           return;
         }
 
+        const voucherCode = data.voucherCode || "-";
+
         statusBox.innerHTML = `
           <h1>Zahlung erfolgreich ✅</h1>
           <p>Ihr Gutschein wurde erfolgreich erstellt.</p>
@@ -300,35 +346,52 @@
 
         voucherArea.innerHTML = `
           <div class="voucher">
-            <div class="voucher-head">
-              <h2 class="voucher-title">Gasthaus Alt Grieth</h2>
-              <div class="voucher-sub">Gutschein</div>
-            </div>
+            <div class="voucher-grid">
+              <div class="voucher-left">
+                <div>
+                  <div class="voucher-head">
+                    <h2 class="voucher-title">Gasthaus Alt Grieth</h2>
+                    <div class="voucher-sub">Gutschein</div>
+                  </div>
 
-            <div class="voucher-amount">€ ${escapeHtml(data.amount)}</div>
+                  <div class="voucher-amount">€ ${escapeHtml(data.amount)}</div>
 
-            <div class="voucher-message">${
-              escapeHtml(data.message) || "Einlösbar für Speisen und Getränke im Gasthaus Alt Grieth."
-            }</div>
+                  <div class="voucher-message">${
+                    escapeHtml(data.message) || "Einlösbar für Speisen und Getränke im Gasthaus Alt Grieth."
+                  }</div>
+                </div>
 
-            <div class="meta">
-              <div class="meta-box">
-                <div class="meta-label">Käufer</div>
-                <div class="meta-value">${escapeHtml(data.name) || "-"}</div>
+                <div class="voucher-code-box">
+                  <div class="voucher-code-label">Gutscheincode</div>
+                  <div class="voucher-code-value">${escapeHtml(voucherCode)}</div>
+                </div>
               </div>
-              <div class="meta-box">
-                <div class="meta-label">Gutscheinwert</div>
-                <div class="meta-value">€ ${escapeHtml(data.amount)}</div>
-              </div>
-              <div class="meta-box">
-                <div class="meta-label">Gutscheincode</div>
-                <div class="meta-value">${escapeHtml(data.voucherCode) || "-"}</div>
-              </div>
-            </div>
 
-            <div class="footer-note">
-              Dieser Online-Gutschein ist bis 1 Jahr nach Kaufdatum gültig und nur zusammen
-              mit der Kaufrechnung einlösbar.
+              <div class="voucher-right">
+                <div>
+                  <h3 class="right-title">Gutschein Details</h3>
+
+                  <div class="side-box">
+                    <div class="side-label">Käufer</div>
+                    <div class="side-value">${escapeHtml(data.name) || "-"}</div>
+                  </div>
+
+                  <div class="side-box">
+                    <div class="side-label">Gutscheinwert</div>
+                    <div class="side-value">€ ${escapeHtml(data.amount)}</div>
+                  </div>
+
+                  <div class="side-box">
+                    <div class="side-label">Status</div>
+                    <div class="side-value">Bezahlt</div>
+                  </div>
+                </div>
+
+                <div class="footer-note">
+                  Dieser Online-Gutschein ist bis 1 Jahr nach Kaufdatum gültig und nur zusammen
+                  mit der Kaufrechnung einlösbar.
+                </div>
+              </div>
             </div>
           </div>
 
