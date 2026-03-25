@@ -3,95 +3,297 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zahlung erfolgreich</title>
+  <title>Gutschein erfolgreich</title>
   <style>
     body {
-      font-family: Georgia, serif;
-      background: #f4ead7;
+      margin: 0;
+      padding: 30px 15px;
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.18), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(255,255,255,0.15), transparent 35%),
+        linear-gradient(135deg, #3d2a1f, #6f4a32 45%, #2b1b13);
+      color: #2d1d14;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .topbox {
+      background: #fffaf0;
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 20px 55px rgba(0,0,0,0.28);
+      margin-bottom: 24px;
       text-align: center;
+    }
+
+    .topbox h1 {
+      margin: 0 0 12px;
+      color: #4a2e1d;
+      font-size: 38px;
+    }
+
+    .topbox p {
+      margin: 8px 0;
+      font-size: 18px;
+      color: #6b4a36;
+    }
+
+    .voucher {
+      position: relative;
+      background:
+        linear-gradient(rgba(255,248,230,0.95), rgba(245,232,202,0.96)),
+        repeating-linear-gradient(
+          0deg,
+          rgba(120, 85, 50, 0.03) 0px,
+          rgba(120, 85, 50, 0.03) 2px,
+          transparent 2px,
+          transparent 6px
+        );
+      border-radius: 24px;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.28);
       padding: 40px;
+      overflow: hidden;
+      border: 2px solid rgba(109, 67, 41, 0.22);
+    }
+
+    .voucher::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 2px solid rgba(125, 85, 50, 0.20);
+      border-radius: 16px;
+      pointer-events: none;
+    }
+
+    .voucher::after {
+      content: "✦";
+      position: absolute;
+      right: 34px;
+      top: 20px;
+      font-size: 60px;
+      color: rgba(125, 85, 50, 0.16);
+    }
+
+    .voucher-head {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .voucher-title {
+      font-size: 46px;
+      letter-spacing: 2px;
+      color: #4a2e1d;
+      text-transform: uppercase;
       margin: 0;
     }
-    .box {
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      max-width: 600px;
-      margin: auto;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+
+    .voucher-sub {
+      margin-top: 8px;
+      font-size: 28px;
+      font-style: italic;
+      color: #7a5336;
     }
-    button {
-      margin-top: 20px;
-      padding: 12px 20px;
-      border-radius: 8px;
+
+    .voucher-amount {
+      text-align: center;
+      font-size: 76px;
+      font-weight: bold;
+      color: #6d4329;
+      margin: 28px 0 20px;
+      text-shadow: 0 2px 0 rgba(255,255,255,0.55);
+    }
+
+    .voucher-message {
+      text-align: center;
+      font-size: 24px;
+      color: #5a3928;
+      line-height: 1.6;
+      max-width: 780px;
+      margin: 0 auto 26px;
+      white-space: pre-wrap;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .meta-box {
+      background: rgba(255,255,255,0.52);
+      border: 1px solid rgba(109, 67, 41, 0.15);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .meta-label {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #8a674d;
+      margin-bottom: 8px;
+    }
+
+    .meta-value {
+      font-size: 22px;
+      color: #4a2e1d;
+      word-break: break-word;
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 32px;
+      font-size: 16px;
+      color: #7a5a45;
+      line-height: 1.7;
+    }
+
+    .actions {
+      text-align: center;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 16px 26px;
+      border-radius: 14px;
       border: none;
-      background: #6d4329;
-      color: white;
+      background: linear-gradient(135deg, #6d4329, #9b6b47);
+      color: #fff7e8;
+      font-size: 18px;
       font-weight: bold;
       cursor: pointer;
+      box-shadow: 0 12px 28px rgba(78, 46, 24, 0.25);
+      margin: 8px;
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #8a674d, #b0845d);
+    }
+
+    @media (max-width: 800px) {
+      .voucher {
+        padding: 26px;
+      }
+      .voucher-title {
+        font-size: 34px;
+      }
+      .voucher-sub {
+        font-size: 22px;
+      }
+      .voucher-amount {
+        font-size: 56px;
+      }
+      .voucher-message {
+        font-size: 20px;
+      }
+      .meta {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="wrap">
+    <div class="topbox" id="statusBox">
+      <h1>Zahlung wird geprüft...</h1>
+      <p>Bitte warten Sie einen Moment.</p>
+    </div>
 
-<div class="box" id="app">
-  <h1>Zahlung wird geprüft...</h1>
-  <p>Bitte warten Sie einen Moment.</p>
-</div>
+    <div id="voucherArea"></div>
+  </div>
 
-<script>
-async function checkPayment() {
-  const app = document.getElementById("app");
-  const paymentId = localStorage.getItem("molliePaymentId");
+  <script>
+    async function checkPayment() {
+      const statusBox = document.getElementById("statusBox");
+      const voucherArea = document.getElementById("voucherArea");
+      const paymentId = localStorage.getItem("molliePaymentId");
 
-  if (!paymentId) {
-    app.innerHTML = `
-      <h1>Geen payment ID</h1>
-      <p>De betaling is niet correct opgeslagen in de browser.</p>
-      <p>Ga terug en start de betaling opnieuw.</p>
-    `;
-    return;
-  }
+      if (!paymentId) {
+        statusBox.innerHTML = `
+          <h1>Geen payment ID</h1>
+          <p>Start de betaling opnieuw via de bestelpagina.</p>
+        `;
+        return;
+      }
 
-  try {
-    const res = await fetch(
-      "https://voucherback.vercel.app/api/checkPayment?id=" + encodeURIComponent(paymentId)
-    );
+      try {
+        const res = await fetch(
+          "https://voucherback.vercel.app/api/checkPayment?id=" + encodeURIComponent(paymentId)
+        );
 
-    const data = await res.json();
+        const data = await res.json();
 
-    if (!res.ok) {
-      throw new Error(data.error || "Fehler bei der Zahlungsprüfung");
+        if (!res.ok) {
+          throw new Error(data.error || "Fehler bei der Zahlungsprüfung");
+        }
+
+        if (data.status !== "paid") {
+          statusBox.innerHTML = `
+            <h1>Zahlung nicht abgeschlossen</h1>
+            <p>Status: <strong>${data.status}</strong></p>
+          `;
+          return;
+        }
+
+        statusBox.innerHTML = `
+          <h1>Zahlung erfolgreich ✅</h1>
+          <p>Ihr Gutschein wurde erfolgreich erstellt.</p>
+        `;
+
+        voucherArea.innerHTML = `
+          <div class="voucher" id="voucherCard">
+            <div class="voucher-head">
+              <h2 class="voucher-title">Gasthaus Alt Grieth</h2>
+              <div class="voucher-sub">Gutschein</div>
+            </div>
+
+            <div class="voucher-amount">€ ${data.amount}</div>
+
+            <div class="voucher-message">${data.message || "Einlösbar für Speisen und Getränke im Gasthaus Alt Grieth."}</div>
+
+            <div class="meta">
+              <div class="meta-box">
+                <div class="meta-label">Empfänger / Käufer</div>
+                <div class="meta-value">${data.name || "-"}</div>
+              </div>
+              <div class="meta-box">
+                <div class="meta-label">Gutscheinwert</div>
+                <div class="meta-value">€ ${data.amount}</div>
+              </div>
+            </div>
+
+            <div class="footer-note">
+              Dieser Online-Gutschein ist bis 1 Jahr nach Kaufdatum gültig und nur zusammen
+              mit der Kaufrechnung einlösbar.
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn" onclick="window.print()">Gutschein drucken / speichern</button>
+            <button class="btn btn-secondary" onclick="goBack()">Neuen Gutschein bestellen</button>
+          </div>
+        `;
+      } catch (err) {
+        statusBox.innerHTML = `
+          <h1>Fehler</h1>
+          <p>${err.message}</p>
+        `;
+      }
     }
 
-    if (data.status === "paid") {
-      app.innerHTML = `
-        <h1>Zahlung erfolgreich ✅</h1>
-        <p><strong>Betrag:</strong> € ${data.amount}</p>
-        <p><strong>Name:</strong> ${data.name || "-"}</p>
-        <p><strong>Nachricht:</strong> ${data.message || "-"}</p>
-        <button onclick="downloadVoucher()">Gutschein herunterladen</button>
-      `;
-    } else {
-      app.innerHTML = `
-        <h1>Zahlung nicht abgeschlossen</h1>
-        <p>Status: <strong>${data.status}</strong></p>
-      `;
+    function goBack() {
+      window.location.href = "https://voucherfront.vercel.app";
     }
-  } catch (err) {
-    app.innerHTML = `
-      <h1>Fehler</h1>
-      <p>${err.message}</p>
-    `;
-  }
-}
 
-function downloadVoucher() {
-  alert("Volgende stap: PDF voucher koppelen.");
-}
-
-checkPayment();
-</script>
-
+    checkPayment();
+  </script>
 </body>
 </html>
