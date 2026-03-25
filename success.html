@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gutschein erfolgreich</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     * {
       box-sizing: border-box;
@@ -11,11 +12,11 @@
 
     body {
       margin: 0;
-      padding: 24px;
+      padding: 28px 16px;
       font-family: Georgia, "Times New Roman", serif;
       background:
         radial-gradient(circle at top left, rgba(255,255,255,0.18), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(255,255,255,0.15), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(255,255,255,0.14), transparent 35%),
         linear-gradient(135deg, #3d2a1f, #6f4a32 45%, #2b1b13);
       color: #2d1d14;
       min-height: 100vh;
@@ -27,22 +28,22 @@
     }
 
     .topbox {
-      background: #fffaf0;
+      background: rgba(255, 250, 240, 0.98);
       border-radius: 20px;
       padding: 24px;
-      box-shadow: 0 20px 55px rgba(0,0,0,0.28);
+      box-shadow: 0 18px 48px rgba(0,0,0,0.25);
       margin-bottom: 24px;
       text-align: center;
     }
 
     .topbox h1 {
-      margin: 0 0 12px;
-      color: #4a2e1d;
+      margin: 0 0 10px;
       font-size: 36px;
+      color: #4a2e1d;
     }
 
     .topbox p {
-      margin: 8px 0;
+      margin: 0;
       font-size: 18px;
       color: #6b4a36;
     }
@@ -50,117 +51,136 @@
     .voucher {
       position: relative;
       background:
-        linear-gradient(rgba(255,248,230,0.97), rgba(245,232,202,0.97)),
+        linear-gradient(rgba(251,244,226,0.98), rgba(242,228,195,0.98)),
         repeating-linear-gradient(
           0deg,
-          rgba(120,85,50,0.03) 0px,
-          rgba(120,85,50,0.03) 2px,
+          rgba(120, 85, 50, 0.03) 0px,
+          rgba(120, 85, 50, 0.03) 2px,
           transparent 2px,
-          transparent 6px
+          transparent 7px
         );
-      border-radius: 24px;
-      box-shadow: 0 22px 60px rgba(0,0,0,0.28);
+      border-radius: 28px;
+      border: 2px solid rgba(102, 67, 39, 0.22);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.28);
       padding: 34px;
       overflow: hidden;
-      border: 2px solid rgba(109, 67, 41, 0.22);
-      min-height: 700px;
     }
 
     .voucher::before {
       content: "";
       position: absolute;
       inset: 18px;
-      border: 2px solid rgba(125, 85, 50, 0.20);
-      border-radius: 16px;
+      border: 2px solid rgba(122, 83, 54, 0.20);
+      border-radius: 18px;
       pointer-events: none;
     }
 
     .voucher-grid {
       display: grid;
-      grid-template-columns: 1.3fr 0.7fr;
-      gap: 28px;
+      grid-template-columns: 1.5fr 0.8fr;
+      gap: 30px;
       align-items: stretch;
-      min-height: 620px;
+      min-height: 540px;
     }
 
-    .voucher-left {
+    .left {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 8px 10px 8px 8px;
+      padding-right: 8px;
     }
 
-    .voucher-right {
+    .right {
       border-left: 2px dashed rgba(109, 67, 41, 0.28);
-      padding: 10px 10px 10px 28px;
+      padding-left: 28px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
 
-    .voucher-head {
-      text-align: left;
+    .brand {
       margin-bottom: 18px;
     }
 
-    .voucher-title {
-      font-size: 44px;
+    .brand h2 {
+      margin: 0;
+      font-size: 48px;
       letter-spacing: 2px;
       color: #4a2e1d;
       text-transform: uppercase;
-      margin: 0;
-      line-height: 1.1;
+      line-height: 1.08;
     }
 
-    .voucher-sub {
-      margin-top: 8px;
+    .brand .sub {
+      margin-top: 10px;
       font-size: 28px;
-      font-style: italic;
       color: #7a5336;
+      font-style: italic;
     }
 
-    .voucher-amount {
-      font-size: 86px;
+    .code-ribbon {
+      display: inline-block;
+      background: linear-gradient(135deg, #6d4329, #9b6b47);
+      color: #fff8eb;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 10px 24px rgba(78, 46, 24, 0.22);
+      margin-bottom: 22px;
+    }
+
+    .amount {
+      font-size: 96px;
       font-weight: bold;
       color: #6d4329;
-      margin: 20px 0 18px;
       line-height: 1;
+      margin: 12px 0 20px;
       text-shadow: 0 2px 0 rgba(255,255,255,0.55);
     }
 
-    .voucher-message {
-      font-size: 28px;
-      color: #5a3928;
-      line-height: 1.5;
-      white-space: pre-wrap;
-      margin: 18px 0 28px;
+    .message-box {
+      background: rgba(255,255,255,0.42);
+      border: 1px solid rgba(109, 67, 41, 0.16);
+      border-radius: 18px;
+      padding: 22px;
+      margin-top: 10px;
+      min-height: 132px;
     }
 
-    .voucher-code-box {
-      background: rgba(255,255,255,0.58);
-      border: 1px solid rgba(109, 67, 41, 0.18);
-      border-radius: 16px;
-      padding: 18px;
-      margin-top: 12px;
-    }
-
-    .voucher-code-label {
+    .message-label {
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: #8a674d;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
-    .voucher-code-value {
+    .message-text {
       font-size: 28px;
-      font-weight: bold;
+      line-height: 1.5;
+      color: #5a3928;
+      white-space: pre-wrap;
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #7a5a45;
+    }
+
+    .panel-title {
+      margin: 0 0 18px;
+      font-size: 24px;
       color: #4a2e1d;
-      word-break: break-word;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
     .side-box {
-      background: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.52);
       border: 1px solid rgba(109, 67, 41, 0.15);
       border-radius: 16px;
       padding: 18px;
@@ -179,21 +199,31 @@
       font-size: 22px;
       color: #4a2e1d;
       word-break: break-word;
+      line-height: 1.4;
     }
 
-    .right-title {
-      font-size: 24px;
-      color: #4a2e1d;
-      margin: 0 0 18px;
+    .qr-box {
+      background: rgba(255,255,255,0.60);
+      border: 1px solid rgba(109, 67, 41, 0.15);
+      border-radius: 16px;
+      padding: 18px;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .qr-label {
+      font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 1px;
+      color: #8a674d;
+      margin-bottom: 14px;
     }
 
-    .footer-note {
-      font-size: 15px;
-      color: #7a5a45;
-      line-height: 1.7;
-      margin-top: 12px;
+    #qrcode {
+      display: inline-block;
+      background: white;
+      padding: 12px;
+      border-radius: 12px;
     }
 
     .actions {
@@ -223,29 +253,30 @@
       text-align: center;
       margin-top: 14px;
       font-size: 14px;
-      color: #f0e4d4;
+      color: #f1e5d6;
     }
 
-    @media (max-width: 980px) {
+    @media (max-width: 1000px) {
       .voucher-grid {
         grid-template-columns: 1fr;
       }
 
-      .voucher-right {
+      .right {
         border-left: none;
         border-top: 2px dashed rgba(109, 67, 41, 0.28);
-        padding: 24px 0 0 0;
+        padding-left: 0;
+        padding-top: 24px;
       }
 
-      .voucher-title {
-        font-size: 34px;
+      .brand h2 {
+        font-size: 38px;
       }
 
-      .voucher-amount {
-        font-size: 56px;
+      .amount {
+        font-size: 64px;
       }
 
-      .voucher-message {
+      .message-text {
         font-size: 22px;
       }
     }
@@ -265,18 +296,9 @@
         display: none !important;
       }
 
-      .wrap {
-        max-width: 100%;
-      }
-
       .voucher {
         box-shadow: none;
-        border: 2px solid rgba(109, 67, 41, 0.4);
-        min-height: auto;
-      }
-
-      .voucher-grid {
-        min-height: auto;
+        border: 2px solid rgba(109, 67, 41, 0.35);
       }
     }
   </style>
@@ -303,6 +325,32 @@
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+    }
+
+    function formatGermanDate(value) {
+      if (!value) return "-";
+      const d = new Date(value);
+      if (isNaN(d.getTime())) return value;
+      return d.toLocaleDateString("de-DE", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      });
+    }
+
+    function goBack() {
+      window.location.href = "https://voucherfront.vercel.app";
+    }
+
+    function makeQrCode(text) {
+      const qrEl = document.getElementById("qrcode");
+      if (!qrEl || !text || typeof QRCode === "undefined") return;
+      qrEl.innerHTML = "";
+      new QRCode(qrEl, {
+        text,
+        width: 150,
+        height: 150
+      });
     }
 
     async function checkPayment() {
@@ -338,6 +386,11 @@
         }
 
         const voucherCode = data.voucherCode || "-";
+        const purchaseDate = formatGermanDate(data.purchaseDate);
+        const validUntil = formatGermanDate(data.validUntil);
+        const messageText =
+          escapeHtml(data.message) ||
+          "Einlösbar für Speisen und Getränke im Gasthaus Alt Grieth.";
 
         statusBox.innerHTML = `
           <h1>Zahlung erfolgreich ✅</h1>
@@ -347,29 +400,32 @@
         voucherArea.innerHTML = `
           <div class="voucher">
             <div class="voucher-grid">
-              <div class="voucher-left">
+              <div class="left">
                 <div>
-                  <div class="voucher-head">
-                    <h2 class="voucher-title">Gasthaus Alt Grieth</h2>
-                    <div class="voucher-sub">Gutschein</div>
+                  <div class="brand">
+                    <h2>Gasthaus Alt Grieth</h2>
+                    <div class="sub">Gutschein</div>
                   </div>
 
-                  <div class="voucher-amount">€ ${escapeHtml(data.amount)}</div>
+                  <div class="code-ribbon">${escapeHtml(voucherCode)}</div>
 
-                  <div class="voucher-message">${
-                    escapeHtml(data.message) || "Einlösbar für Speisen und Getränke im Gasthaus Alt Grieth."
-                  }</div>
+                  <div class="amount">€ ${escapeHtml(data.amount)}</div>
+
+                  <div class="message-box">
+                    <div class="message-label">Freier Text</div>
+                    <div class="message-text">${messageText}</div>
+                  </div>
                 </div>
 
-                <div class="voucher-code-box">
-                  <div class="voucher-code-label">Gutscheincode</div>
-                  <div class="voucher-code-value">${escapeHtml(voucherCode)}</div>
+                <div class="footer-note">
+                  Dieser Online-Gutschein ist nur zusammen mit der Kaufrechnung einlösbar.
+                  Gültig bis zum angegebenen Datum.
                 </div>
               </div>
 
-              <div class="voucher-right">
+              <div class="right">
                 <div>
-                  <h3 class="right-title">Gutschein Details</h3>
+                  <h3 class="panel-title">Gutschein Details</h3>
 
                   <div class="side-box">
                     <div class="side-label">Käufer</div>
@@ -382,14 +438,24 @@
                   </div>
 
                   <div class="side-box">
+                    <div class="side-label">Kaufdatum</div>
+                    <div class="side-value">${escapeHtml(purchaseDate)}</div>
+                  </div>
+
+                  <div class="side-box">
+                    <div class="side-label">Gültig bis</div>
+                    <div class="side-value">${escapeHtml(validUntil)}</div>
+                  </div>
+
+                  <div class="side-box">
                     <div class="side-label">Status</div>
                     <div class="side-value">Bezahlt</div>
                   </div>
-                </div>
 
-                <div class="footer-note">
-                  Dieser Online-Gutschein ist bis 1 Jahr nach Kaufdatum gültig und nur zusammen
-                  mit der Kaufrechnung einlösbar.
+                  <div class="qr-box">
+                    <div class="qr-label">QR-Code</div>
+                    <div id="qrcode"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -400,16 +466,23 @@
             <button class="btn btn-secondary" onclick="goBack()">Neuen Gutschein bestellen</button>
           </div>
         `;
+
+        const qrText = [
+          "Gasthaus Alt Grieth Gutschein",
+          "Code: " + voucherCode,
+          "Betrag: EUR " + data.amount,
+          "Käufer: " + (data.name || "-"),
+          "Kaufdatum: " + purchaseDate,
+          "Gültig bis: " + validUntil
+        ].join(" | ");
+
+        makeQrCode(qrText);
       } catch (err) {
         statusBox.innerHTML = `
           <h1>Fehler</h1>
           <p>${escapeHtml(err.message)}</p>
         `;
       }
-    }
-
-    function goBack() {
-      window.location.href = "https://voucherfront.vercel.app";
     }
 
     checkPayment();
