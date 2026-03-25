@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zahlung erfolgreich</title>
   <style>
     body {
@@ -9,6 +10,7 @@
       background: #f4ead7;
       text-align: center;
       padding: 40px;
+      margin: 0;
     }
     .box {
       background: white;
@@ -34,44 +36,58 @@
 
 <div class="box" id="app">
   <h1>Zahlung wird geprüft...</h1>
+  <p>Bitte warten Sie einen Moment.</p>
 </div>
 
 <script>
 async function checkPayment() {
-  const params = new URLSearchParams(window.location.search);
-  const paymentId = params.get("id");
+  const app = document.getElementById("app");
+  const paymentId = localStorage.getItem("molliePaymentId");
 
   if (!paymentId) {
-    document.getElementById("app").innerHTML = "<h1>Geen payment ID</h1>";
+    app.innerHTML = `
+      <h1>Geen payment ID</h1>
+      <p>De betaling is niet correct opgeslagen in de browser.</p>
+      <p>Ga terug en start de betaling opnieuw.</p>
+    `;
     return;
   }
 
   try {
     const res = await fetch(
-      "https://voucherback.vercel.app/api/checkPayment?id=" + paymentId
+      "https://voucherback.vercel.app/api/checkPayment?id=" + encodeURIComponent(paymentId)
     );
 
     const data = await res.json();
 
-    if (data.status === "paid") {
-      document.getElementById("app").innerHTML = `
-        <h1>Zahlung erfolgreich ✅</h1>
-        <p>Betrag: € ${data.amount}</p>
-        <p>Name: ${data.name}</p>
-        <p>${data.message || ""}</p>
-        <button onclick="alert('Volgende stap: PDF voucher')">
-          Gutschein downloaden
-        </button>
-      `;
-    } else {
-      document.getElementById("app").innerHTML =
-        "<h1>Zahlung nicht abgeschlossen</h1>";
+    if (!res.ok) {
+      throw new Error(data.error || "Fehler bei der Zahlungsprüfung");
     }
 
+    if (data.status === "paid") {
+      app.innerHTML = `
+        <h1>Zahlung erfolgreich ✅</h1>
+        <p><strong>Betrag:</strong> € ${data.amount}</p>
+        <p><strong>Name:</strong> ${data.name || "-"}</p>
+        <p><strong>Nachricht:</strong> ${data.message || "-"}</p>
+        <button onclick="downloadVoucher()">Gutschein herunterladen</button>
+      `;
+    } else {
+      app.innerHTML = `
+        <h1>Zahlung nicht abgeschlossen</h1>
+        <p>Status: <strong>${data.status}</strong></p>
+      `;
+    }
   } catch (err) {
-    document.getElementById("app").innerHTML =
-      "<h1>Fehler: " + err.message + "</h1>";
+    app.innerHTML = `
+      <h1>Fehler</h1>
+      <p>${err.message}</p>
+    `;
   }
+}
+
+function downloadVoucher() {
+  alert("Volgende stap: PDF voucher koppelen.");
 }
 
 checkPayment();
