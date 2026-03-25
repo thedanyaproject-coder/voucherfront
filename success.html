@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gutschein erfolgreich</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 30px 15px;
@@ -15,7 +19,6 @@
         linear-gradient(135deg, #3d2a1f, #6f4a32 45%, #2b1b13);
       color: #2d1d14;
       min-height: 100vh;
-      box-sizing: border-box;
     }
 
     .wrap {
@@ -47,11 +50,11 @@
     .voucher {
       position: relative;
       background:
-        linear-gradient(rgba(255,248,230,0.95), rgba(245,232,202,0.96)),
+        linear-gradient(rgba(255,248,230,0.96), rgba(245,232,202,0.96)),
         repeating-linear-gradient(
           0deg,
-          rgba(120, 85, 50, 0.03) 0px,
-          rgba(120, 85, 50, 0.03) 2px,
+          rgba(120,85,50,0.03) 0px,
+          rgba(120,85,50,0.03) 2px,
           transparent 2px,
           transparent 6px
         );
@@ -102,7 +105,7 @@
 
     .voucher-amount {
       text-align: center;
-      font-size: 76px;
+      font-size: 78px;
       font-weight: bold;
       color: #6d4329;
       margin: 28px 0 20px;
@@ -121,13 +124,13 @@
 
     .meta {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
+      grid-template-columns: repeat(3, minmax(0,1fr));
       gap: 16px;
       margin-top: 24px;
     }
 
     .meta-box {
-      background: rgba(255,255,255,0.52);
+      background: rgba(255,255,255,0.55);
       border: 1px solid rgba(109, 67, 41, 0.15);
       border-radius: 16px;
       padding: 18px;
@@ -178,24 +181,58 @@
       background: linear-gradient(135deg, #8a674d, #b0845d);
     }
 
-    @media (max-width: 800px) {
+    .print-note {
+      text-align: center;
+      margin-top: 14px;
+      font-size: 14px;
+      color: #f0e4d4;
+    }
+
+    @media (max-width: 860px) {
       .voucher {
         padding: 26px;
       }
+
       .voucher-title {
         font-size: 34px;
       }
+
       .voucher-sub {
         font-size: 22px;
       }
+
       .voucher-amount {
-        font-size: 56px;
+        font-size: 54px;
       }
+
       .voucher-message {
         font-size: 20px;
       }
+
       .meta {
         grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+
+      .topbox, .actions, .print-note {
+        display: none !important;
+      }
+
+      .wrap {
+        max-width: 100%;
+      }
+
+      .voucher {
+        box-shadow: none;
+        border: 2px solid rgba(109, 67, 41, 0.4);
+        margin: 0;
+        page-break-inside: avoid;
       }
     }
   </style>
@@ -208,9 +245,22 @@
     </div>
 
     <div id="voucherArea"></div>
+
+    <div class="print-note">
+      Tipp: Nutzen Sie “Drucken” und speichern Sie den Gutschein als PDF.
+    </div>
   </div>
 
   <script>
+    function escapeHtml(text) {
+      return String(text || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
     async function checkPayment() {
       const statusBox = document.getElementById("statusBox");
       const voucherArea = document.getElementById("voucherArea");
@@ -238,7 +288,7 @@
         if (data.status !== "paid") {
           statusBox.innerHTML = `
             <h1>Zahlung nicht abgeschlossen</h1>
-            <p>Status: <strong>${data.status}</strong></p>
+            <p>Status: <strong>${escapeHtml(data.status)}</strong></p>
           `;
           return;
         }
@@ -249,24 +299,30 @@
         `;
 
         voucherArea.innerHTML = `
-          <div class="voucher" id="voucherCard">
+          <div class="voucher">
             <div class="voucher-head">
               <h2 class="voucher-title">Gasthaus Alt Grieth</h2>
               <div class="voucher-sub">Gutschein</div>
             </div>
 
-            <div class="voucher-amount">€ ${data.amount}</div>
+            <div class="voucher-amount">€ ${escapeHtml(data.amount)}</div>
 
-            <div class="voucher-message">${data.message || "Einlösbar für Speisen und Getränke im Gasthaus Alt Grieth."}</div>
+            <div class="voucher-message">${
+              escapeHtml(data.message) || "Einlösbar für Speisen und Getränke im Gasthaus Alt Grieth."
+            }</div>
 
             <div class="meta">
               <div class="meta-box">
-                <div class="meta-label">Empfänger / Käufer</div>
-                <div class="meta-value">${data.name || "-"}</div>
+                <div class="meta-label">Käufer</div>
+                <div class="meta-value">${escapeHtml(data.name) || "-"}</div>
               </div>
               <div class="meta-box">
                 <div class="meta-label">Gutscheinwert</div>
-                <div class="meta-value">€ ${data.amount}</div>
+                <div class="meta-value">€ ${escapeHtml(data.amount)}</div>
+              </div>
+              <div class="meta-box">
+                <div class="meta-label">Gutscheincode</div>
+                <div class="meta-value">${escapeHtml(data.voucherCode) || "-"}</div>
               </div>
             </div>
 
@@ -277,14 +333,14 @@
           </div>
 
           <div class="actions">
-            <button class="btn" onclick="window.print()">Gutschein drucken / speichern</button>
+            <button class="btn" onclick="window.print()">Gutschein drucken / als PDF speichern</button>
             <button class="btn btn-secondary" onclick="goBack()">Neuen Gutschein bestellen</button>
           </div>
         `;
       } catch (err) {
         statusBox.innerHTML = `
           <h1>Fehler</h1>
-          <p>${err.message}</p>
+          <p>${escapeHtml(err.message)}</p>
         `;
       }
     }
