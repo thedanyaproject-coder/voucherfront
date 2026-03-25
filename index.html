@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gutschein kaufen</title>
   <style>
     body {
@@ -9,6 +10,7 @@
       background: #f4ead7;
       text-align: center;
       padding: 40px;
+      margin: 0;
     }
     .box {
       background: white;
@@ -25,12 +27,17 @@
       border-radius: 8px;
       border: 1px solid #ccc;
       font-size: 16px;
+      box-sizing: border-box;
     }
     button {
       background: #6d4329;
       color: white;
       font-weight: bold;
       cursor: pointer;
+      border: none;
+    }
+    #status {
+      margin-top: 15px;
     }
   </style>
 </head>
@@ -51,20 +58,23 @@
 
 <script>
 const BACKEND_URL = "https://voucherback.vercel.app/api/createPayment";
+
 async function startPayment() {
   const amount = document.getElementById("amount").value;
   const name = document.getElementById("name").value;
   const email = document.getElementById("email").value;
   const message = document.getElementById("message").value;
 
-  if (!amount || amount <= 0) {
+  if (!amount || Number(amount) <= 0) {
     alert("Bitte gültigen Betrag eingeben");
     return;
   }
 
-  document.getElementById("status").innerText = "Bezig met betaling...";
+  document.getElementById("status").innerText = "Zahlung wird vorbereitet...";
 
   try {
+    localStorage.removeItem("molliePaymentId");
+
     const res = await fetch(BACKEND_URL, {
       method: "POST",
       headers: {
@@ -81,14 +91,22 @@ async function startPayment() {
 
     const data = await res.json();
 
-    if (data.checkoutUrl) {
-      window.location.href = data.checkoutUrl;
-    } else {
-      throw new Error("Geen checkout URL");
+    if (!res.ok) {
+      throw new Error(data.error || "Fehler beim Erstellen der Zahlung");
     }
 
+    if (data.id) {
+      localStorage.setItem("molliePaymentId", data.id);
+    }
+
+    if (data.checkoutUrl) {
+      window.location.href = data.checkoutUrl;
+      return;
+    }
+
+    throw new Error("Keine checkoutUrl ontvangen");
   } catch (err) {
-    document.getElementById("status").innerText = "Fout: " + err.message;
+    document.getElementById("status").innerText = "Fehler: " + err.message;
   }
 }
 </script>
