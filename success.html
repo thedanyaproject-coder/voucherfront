@@ -1,1 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Zahlung erfolgreich</title>
+  <style>
+    body {
+      font-family: Georgia, serif;
+      background: #f4ead7;
+      text-align: center;
+      padding: 40px;
+    }
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: none;
+      background: #6d4329;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
 
+<div class="box" id="app">
+  <h1>Zahlung wird geprüft...</h1>
+</div>
+
+<script>
+async function checkPayment() {
+  const params = new URLSearchParams(window.location.search);
+  const paymentId = params.get("id");
+
+  if (!paymentId) {
+    document.getElementById("app").innerHTML = "<h1>Geen payment ID</h1>";
+    return;
+  }
+
+  try {
+    const res = await fetch(
+      "https://voucherback.vercel.app/api/checkPayment?id=" + paymentId
+    );
+
+    const data = await res.json();
+
+    if (data.status === "paid") {
+      document.getElementById("app").innerHTML = `
+        <h1>Zahlung erfolgreich ✅</h1>
+        <p>Betrag: € ${data.amount}</p>
+        <p>Name: ${data.name}</p>
+        <p>${data.message || ""}</p>
+        <button onclick="alert('Volgende stap: PDF voucher')">
+          Gutschein downloaden
+        </button>
+      `;
+    } else {
+      document.getElementById("app").innerHTML =
+        "<h1>Zahlung nicht abgeschlossen</h1>";
+    }
+
+  } catch (err) {
+    document.getElementById("app").innerHTML =
+      "<h1>Fehler: " + err.message + "</h1>";
+  }
+}
+
+checkPayment();
+</script>
+
+</body>
+</html>
