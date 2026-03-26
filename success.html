@@ -1,491 +1,231 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gutschein erfolgreich</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gutschein</title>
 
-    body {
-      margin: 0;
-      padding: 28px 16px;
-      font-family: Georgia, "Times New Roman", serif;
-      background:
-        radial-gradient(circle at top left, rgba(255,255,255,0.18), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(255,255,255,0.14), transparent 35%),
-        linear-gradient(135deg, #3d2a1f, #6f4a32 45%, #2b1b13);
-      color: #2d1d14;
-      min-height: 100vh;
-    }
+<style>
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: Georgia, serif;
+  background: linear-gradient(135deg,#3d2a1f,#6f4a32,#2b1b13);
+}
 
-    .wrap {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
+.wrap {
+  max-width: 1100px;
+  margin: auto;
+}
 
-    .topbox {
-      background: rgba(255, 250, 240, 0.98);
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: 0 18px 48px rgba(0,0,0,0.25);
-      margin-bottom: 24px;
-      text-align: center;
-    }
+.topbox {
+  background: #fffaf0;
+  padding: 20px;
+  border-radius: 16px;
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-    .topbox h1 {
-      margin: 0 0 10px;
-      font-size: 36px;
-      color: #4a2e1d;
-    }
+.voucher {
+  background: #f7ecd0;
+  border-radius: 18px;
+  padding: 25px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  border: 2px solid #8a6344;
+}
 
-    .topbox p {
-      margin: 0;
-      font-size: 18px;
-      color: #6b4a36;
-    }
+.grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
 
-    .voucher {
-      position: relative;
-      background:
-        linear-gradient(rgba(251,244,226,0.98), rgba(242,228,195,0.98)),
-        repeating-linear-gradient(
-          0deg,
-          rgba(120, 85, 50, 0.03) 0px,
-          rgba(120, 85, 50, 0.03) 2px,
-          transparent 2px,
-          transparent 7px
-        );
-      border-radius: 28px;
-      border: 2px solid rgba(102, 67, 39, 0.22);
-      box-shadow: 0 24px 60px rgba(0,0,0,0.28);
-      padding: 34px;
-      overflow: hidden;
-    }
+.left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-    .voucher::before {
-      content: "";
-      position: absolute;
-      inset: 18px;
-      border: 2px solid rgba(122, 83, 54, 0.20);
-      border-radius: 18px;
-      pointer-events: none;
-    }
+.brand {
+  font-size: 34px;
+  font-weight: bold;
+  color: #4a2e1d;
+  letter-spacing: 2px;
+}
 
-    .voucher-grid {
-      display: grid;
-      grid-template-columns: 1.5fr 0.8fr;
-      gap: 30px;
-      align-items: stretch;
-      min-height: 540px;
-    }
+.subtitle {
+  font-size: 32px;
+  font-style: italic;
+  margin-top: 5px;
+}
 
-    .left {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding-right: 8px;
-    }
+.amount {
+  font-size: 60px;
+  color: #6d4329;
+  margin: 15px 0;
+}
 
-    .right {
-      border-left: 2px dashed rgba(109, 67, 41, 0.28);
-      padding-left: 28px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+.message {
+  background: rgba(255,255,255,0.5);
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 18px;
+  min-height: 80px;
+}
 
-    .brand {
-      margin-bottom: 18px;
-    }
+.footer {
+  font-size: 13px;
+  color: #5a3928;
+  margin-top: 15px;
+}
 
-    .brand h2 {
-      margin: 0;
-      font-size: 48px;
-      letter-spacing: 2px;
-      color: #4a2e1d;
-      text-transform: uppercase;
-      line-height: 1.08;
-    }
+.right {
+  border-left: 2px dashed #6d4329;
+  padding-left: 20px;
+}
 
-    .brand .sub {
-      margin-top: 10px;
-      font-size: 28px;
-      color: #7a5336;
-      font-style: italic;
-    }
+.box {
+  background: rgba(255,255,255,0.6);
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
 
-    .code-ribbon {
-      display: inline-block;
-      background: linear-gradient(135deg, #6d4329, #9b6b47);
-      color: #fff8eb;
-      padding: 12px 18px;
-      border-radius: 14px;
-      font-size: 24px;
-      font-weight: bold;
-      letter-spacing: 1px;
-      box-shadow: 0 10px 24px rgba(78, 46, 24, 0.22);
-      margin-bottom: 22px;
-    }
+.label {
+  font-size: 12px;
+  color: #8a674d;
+}
 
-    .amount {
-      font-size: 96px;
-      font-weight: bold;
-      color: #6d4329;
-      line-height: 1;
-      margin: 12px 0 20px;
-      text-shadow: 0 2px 0 rgba(255,255,255,0.55);
-    }
+.value {
+  font-size: 18px;
+  color: #4a2e1d;
+}
 
-    .message-box {
-      background: rgba(255,255,255,0.42);
-      border: 1px solid rgba(109, 67, 41, 0.16);
-      border-radius: 18px;
-      padding: 22px;
-      margin-top: 10px;
-      min-height: 132px;
-    }
+.code {
+  font-size: 22px;
+  font-weight: bold;
+}
 
-    .message-label {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #8a674d;
-      margin-bottom: 10px;
-    }
+.actions {
+  text-align: center;
+  margin-top: 20px;
+}
 
-    .message-text {
-      font-size: 28px;
-      line-height: 1.5;
-      color: #5a3928;
-      white-space: pre-wrap;
-    }
+button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #6d4329;
+  color: white;
+  cursor: pointer;
+  margin: 5px;
+}
 
-    .footer-note {
-      margin-top: 24px;
-      font-size: 16px;
-      line-height: 1.7;
-      color: #7a5a45;
-    }
+@media print {
+  @page {
+    size: A4 landscape;
+  }
 
-    .panel-title {
-      margin: 0 0 18px;
-      font-size: 24px;
-      color: #4a2e1d;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
+  body {
+    background: white;
+  }
 
-    .side-box {
-      background: rgba(255,255,255,0.52);
-      border: 1px solid rgba(109, 67, 41, 0.15);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 16px;
-    }
+  .topbox, .actions {
+    display: none;
+  }
 
-    .side-label {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #8a674d;
-      margin-bottom: 8px;
-    }
-
-    .side-value {
-      font-size: 22px;
-      color: #4a2e1d;
-      word-break: break-word;
-      line-height: 1.4;
-    }
-
-    .qr-box {
-      background: rgba(255,255,255,0.60);
-      border: 1px solid rgba(109, 67, 41, 0.15);
-      border-radius: 16px;
-      padding: 18px;
-      text-align: center;
-      margin-top: 8px;
-    }
-
-    .qr-label {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #8a674d;
-      margin-bottom: 14px;
-    }
-
-    #qrcode {
-      display: inline-block;
-      background: white;
-      padding: 12px;
-      border-radius: 12px;
-    }
-
-    .actions {
-      text-align: center;
-      margin-top: 28px;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 16px 26px;
-      border-radius: 14px;
-      border: none;
-      background: linear-gradient(135deg, #6d4329, #9b6b47);
-      color: #fff7e8;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 12px 28px rgba(78, 46, 24, 0.25);
-      margin: 8px;
-    }
-
-    .btn-secondary {
-      background: linear-gradient(135deg, #8a674d, #b0845d);
-    }
-
-    .print-note {
-      text-align: center;
-      margin-top: 14px;
-      font-size: 14px;
-      color: #f1e5d6;
-    }
-
-    @media (max-width: 1000px) {
-      .voucher-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .right {
-        border-left: none;
-        border-top: 2px dashed rgba(109, 67, 41, 0.28);
-        padding-left: 0;
-        padding-top: 24px;
-      }
-
-      .brand h2 {
-        font-size: 38px;
-      }
-
-      .amount {
-        font-size: 64px;
-      }
-
-      .message-text {
-        font-size: 22px;
-      }
-    }
-
-    @media print {
-      @page {
-        size: A4 landscape;
-        margin: 10mm;
-      }
-
-      body {
-        background: white;
-        padding: 0;
-      }
-
-      .topbox, .actions, .print-note {
-        display: none !important;
-      }
-
-      .voucher {
-        box-shadow: none;
-        border: 2px solid rgba(109, 67, 41, 0.35);
-      }
-    }
-  </style>
+  .voucher {
+    box-shadow: none;
+  }
+}
+</style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="topbox" id="statusBox">
-      <h1>Zahlung wird geprüft...</h1>
-      <p>Bitte warten Sie einen Moment.</p>
-    </div>
 
-    <div id="voucherArea"></div>
+<div class="wrap">
 
-    <div class="print-note">
-      Tipp: Nutzen Sie “Drucken” und speichern Sie den Gutschein als PDF im Querformat.
-    </div>
-  </div>
+<div class="topbox" id="statusBox">
+  <h1>Zahlung wird geprüft...</h1>
+</div>
 
-  <script>
-    function escapeHtml(text) {
-      return String(text || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
+<div id="voucherArea"></div>
 
-    function formatGermanDate(value) {
-      if (!value) return "-";
-      const d = new Date(value);
-      if (isNaN(d.getTime())) return value;
-      return d.toLocaleDateString("de-DE", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric"
-      });
-    }
+</div>
 
-    function goBack() {
-      window.location.href = "https://voucherfront.vercel.app";
-    }
+<script>
+function formatDate(d){
+  return new Date(d).toLocaleDateString("de-DE");
+}
 
-    function makeQrCode(text) {
-      const qrEl = document.getElementById("qrcode");
-      if (!qrEl || !text || typeof QRCode === "undefined") return;
-      qrEl.innerHTML = "";
-      new QRCode(qrEl, {
-        text,
-        width: 150,
-        height: 150
-      });
-    }
+async function checkPayment(){
 
-    async function checkPayment() {
-      const statusBox = document.getElementById("statusBox");
-      const voucherArea = document.getElementById("voucherArea");
-      const paymentId = localStorage.getItem("molliePaymentId");
+  const id = localStorage.getItem("molliePaymentId");
 
-      if (!paymentId) {
-        statusBox.innerHTML = `
-          <h1>Geen payment ID</h1>
-          <p>Start de betaling opnieuw via de bestelpagina.</p>
-        `;
-        return;
-      }
+  if(!id){
+    document.getElementById("statusBox").innerHTML = "Geen payment ID";
+    return;
+  }
 
-      try {
-        const res = await fetch(
-          "https://voucherback.vercel.app/api/checkPayment?id=" + encodeURIComponent(paymentId)
-        );
+  const res = await fetch("https://voucherback.vercel.app/api/checkPayment?id="+id);
+  const data = await res.json();
 
-        const data = await res.json();
+  if(data.status !== "paid"){
+    document.getElementById("statusBox").innerHTML = "Zahlung nicht abgeschlossen";
+    return;
+  }
 
-        if (!res.ok) {
-          throw new Error(data.error || "Fehler bei der Zahlungsprüfung");
-        }
+  document.getElementById("statusBox").innerHTML = "Zahlung erfolgreich";
 
-        if (data.status !== "paid") {
-          statusBox.innerHTML = `
-            <h1>Zahlung nicht abgeschlossen</h1>
-            <p>Status: <strong>${escapeHtml(data.status)}</strong></p>
-          `;
-          return;
-        }
+  document.getElementById("voucherArea").innerHTML = `
+    <div class="voucher">
+      <div class="grid">
 
-        const voucherCode = data.voucherCode || "-";
-        const purchaseDate = formatGermanDate(data.purchaseDate);
-        const validUntil = formatGermanDate(data.validUntil);
-        const messageText =
-          escapeHtml(data.message) ||
-          "Einlösbar für Speisen und Getränke im Gasthaus Alt Grieth.";
+        <div class="left">
+          <div>
+            <div class="brand">Gasthaus Alt Grieth</div>
+            <div class="subtitle">GUTSCHEIN</div>
 
-        statusBox.innerHTML = `
-          <h1>Zahlung erfolgreich ✅</h1>
-          <p>Ihr Gutschein wurde erfolgreich erstellt.</p>
-        `;
+            <div class="amount">€ ${data.amount}</div>
 
-        voucherArea.innerHTML = `
-          <div class="voucher">
-            <div class="voucher-grid">
-              <div class="left">
-                <div>
-                  <div class="brand">
-                    <h2>Gasthaus Alt Grieth</h2>
-                    <div class="sub">Gutschein</div>
-                  </div>
-
-                  <div class="code-ribbon">${escapeHtml(voucherCode)}</div>
-
-                  <div class="amount">€ ${escapeHtml(data.amount)}</div>
-
-                  <div class="message-box">
-                    <div class="message-label">Freier Text</div>
-                    <div class="message-text">${messageText}</div>
-                  </div>
-                </div>
-
-                <div class="footer-note">
-                  Dieser Online-Gutschein ist nur zusammen mit der Kaufrechnung einlösbar.
-                  Gültig bis zum angegebenen Datum.
-                </div>
-              </div>
-
-              <div class="right">
-                <div>
-                  <h3 class="panel-title">Gutschein Details</h3>
-
-                  <div class="side-box">
-                    <div class="side-label">Käufer</div>
-                    <div class="side-value">${escapeHtml(data.name) || "-"}</div>
-                  </div>
-
-                  <div class="side-box">
-                    <div class="side-label">Gutscheinwert</div>
-                    <div class="side-value">€ ${escapeHtml(data.amount)}</div>
-                  </div>
-
-                  <div class="side-box">
-                    <div class="side-label">Kaufdatum</div>
-                    <div class="side-value">${escapeHtml(purchaseDate)}</div>
-                  </div>
-
-                  <div class="side-box">
-                    <div class="side-label">Gültig bis</div>
-                    <div class="side-value">${escapeHtml(validUntil)}</div>
-                  </div>
-
-                  <div class="side-box">
-                    <div class="side-label">Status</div>
-                    <div class="side-value">Bezahlt</div>
-                  </div>
-
-                  <div class="qr-box">
-                    <div class="qr-label">QR-Code</div>
-                    <div id="qrcode"></div>
-                  </div>
-                </div>
-              </div>
+            <div class="message">
+              ${data.message || "Einlösbar für Speisen und Getränke"}
             </div>
           </div>
 
-          <div class="actions">
-            <button class="btn" onclick="window.print()">Gutschein drucken / als PDF speichern</button>
-            <button class="btn btn-secondary" onclick="goBack()">Neuen Gutschein bestellen</button>
+          <div class="footer">
+            Gültig bis ${formatDate(data.validUntil)}
           </div>
-        `;
+        </div>
 
-        const qrText = [
-          "Gasthaus Alt Grieth Gutschein",
-          "Code: " + voucherCode,
-          "Betrag: EUR " + data.amount,
-          "Käufer: " + (data.name || "-"),
-          "Kaufdatum: " + purchaseDate,
-          "Gültig bis: " + validUntil
-        ].join(" | ");
+        <div class="right">
+          <div class="box">
+            <div class="label">Käufer</div>
+            <div class="value">${data.name}</div>
+          </div>
 
-        makeQrCode(qrText);
-      } catch (err) {
-        statusBox.innerHTML = `
-          <h1>Fehler</h1>
-          <p>${escapeHtml(err.message)}</p>
-        `;
-      }
-    }
+          <div class="box">
+            <div class="label">Kaufdatum</div>
+            <div class="value">${formatDate(data.purchaseDate)}</div>
+          </div>
 
-    checkPayment();
-  </script>
+          <div class="box">
+            <div class="label">Voucher Code</div>
+            <div class="value code">${data.voucherCode}</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="actions">
+      <button onclick="window.print()">Download / Print</button>
+    </div>
+  `;
+}
+
+checkPayment();
+</script>
+
 </body>
 </html>
