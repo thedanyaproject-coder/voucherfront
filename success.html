@@ -1,537 +1,130 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gutschein – Gasthaus Alt Grieth</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zahlung erfolgreich</title>
   <style>
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-    }
-
     body {
-      font-family: Georgia, "Times New Roman", serif;
-      background:
-        radial-gradient(circle at top left, rgba(255,255,255,0.18), transparent 28%),
-        radial-gradient(circle at bottom right, rgba(255,255,255,0.12), transparent 34%),
-        linear-gradient(135deg, #3d2a1f, #6f4a32 45%, #2b1b13);
-      color: #2d1d14;
-      min-height: 100vh;
-      padding: 14px;
+      margin: 0;
+      padding: 40px 20px;
+      background: #ffffff;
+      color: #160520;
+      font-family: Acto, sans-serif;
+      text-align: center;
     }
 
-    .page {
-      max-width: 1500px;
+    .wrap {
+      max-width: 700px;
       margin: 0 auto;
     }
 
-    .status-card {
-      background: rgba(255, 250, 240, 0.98);
-      border-radius: 16px;
-      padding: 16px 18px;
-      text-align: center;
+    h1 {
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      line-height: 1.6;
       margin-bottom: 14px;
-      box-shadow: 0 14px 34px rgba(0,0,0,0.22);
     }
 
-    .status-card h1 {
-      margin: 0 0 6px;
-      font-size: 24px;
-      color: #4a2e1d;
-    }
-
-    .status-card p {
-      margin: 0;
-      font-size: 14px;
-      color: #6b4a36;
-    }
-
-    .voucher-shell {
-      background: linear-gradient(180deg, #f8eed6 0%, #efdfba 100%);
-      border-radius: 22px;
-      padding: 10px;
-      border: 2px solid rgba(102, 67, 39, 0.28);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.22);
-    }
-
-    .voucher {
-      position: relative;
-      background:
-        linear-gradient(rgba(252,246,230,0.97), rgba(244,233,205,0.97)),
-        repeating-linear-gradient(
-          0deg,
-          rgba(120,85,50,0.025) 0px,
-          rgba(120,85,50,0.025) 2px,
-          transparent 2px,
-          transparent 7px
-        );
-      border-radius: 18px;
-      padding: 16px;
-      overflow: hidden;
-    }
-
-    .voucher::before {
-      content: "";
-      position: absolute;
-      inset: 10px;
-      border: 2px solid rgba(122,83,54,0.18);
-      border-radius: 12px;
-      pointer-events: none;
-    }
-
-    .ornament-left,
-    .ornament-right {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      color: rgba(122,83,54,0.14);
-      font-size: 34px;
-      line-height: 1.1;
-      pointer-events: none;
-      user-select: none;
-      z-index: 0;
-    }
-
-    .ornament-left { left: 6px; }
-    .ornament-right { right: 6px; }
-
-    .voucher-grid {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-
-    .left, .right {
-      padding: 8px 10px;
-    }
-
-    .right {
-      border-top: 2px dashed rgba(109,67,41,0.24);
-      padding-top: 16px;
-    }
-
-    .brand-top {
-      font-size: 14px;
-      letter-spacing: 4px;
-      color: #7a5336;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .brand-main {
-      margin: 0;
-      font-size: 28px;
-      line-height: 1.05;
-      text-transform: uppercase;
-      color: #4a2e1d;
-      letter-spacing: 1px;
-    }
-
-    .title-gutschein {
-      font-size: 32px;
-      letter-spacing: 2px;
-      color: #7a5336;
-      text-transform: uppercase;
-      margin: 14px 0 10px;
-      font-weight: bold;
-    }
-
-    .amount-row {
-      display: flex;
-      justify-content: center;
-      align-items: baseline;
-      gap: 10px;
-      margin: 8px 0 16px;
-      color: #6d4329;
-      text-shadow: 0 2px 0 rgba(255,255,255,0.55);
-    }
-
-    .amount-currency {
-      font-size: 28px;
-      font-weight: bold;
-    }
-
-    .amount-value {
-      font-size: 56px;
-      font-weight: bold;
-      line-height: 1;
-    }
-
-    .message-panel {
-      background: rgba(255,255,255,0.42);
-      border: 1px solid rgba(109,67,41,0.16);
-      border-radius: 16px;
-      padding: 14px 16px;
-      min-height: 120px;
-    }
-
-    .message-label,
-    .detail-label,
-    .code-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #8a674d;
-      margin-bottom: 6px;
-    }
-
-    .message-text {
-      font-size: 18px;
-      line-height: 1.5;
-      color: #5a3928;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .fineprint {
-      margin-top: 14px;
-      padding-top: 12px;
-      border-top: 1px solid rgba(109,67,41,0.18);
-      font-size: 13px;
-      color: #7a5a45;
-      line-height: 1.7;
-    }
-
-    .panel-title {
-      font-size: 15px;
-      color: #4a2e1d;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin: 2px 0 12px;
-    }
-
-    .detail-box {
-      background: rgba(255,255,255,0.56);
-      border: 1px solid rgba(109,67,41,0.14);
-      border-radius: 14px;
-      padding: 14px;
-      margin-bottom: 12px;
-    }
-
-    .detail-value {
-      font-size: 16px;
-      line-height: 1.4;
-      color: #4a2e1d;
-      word-break: break-word;
-    }
-
-    .code-box {
-      background: linear-gradient(135deg, #6d4329, #8f603c);
-      color: #fff7ea;
-      border-radius: 16px;
-      padding: 16px 14px;
-      box-shadow: 0 8px 18px rgba(78,46,24,0.16);
-      text-align: center;
-      margin-top: 4px;
-    }
-
-    .code-value {
-      font-size: 22px;
-      line-height: 1.2;
-      font-weight: bold;
-      letter-spacing: 1px;
-      word-break: break-word;
-    }
-
-    .actions {
-      text-align: center;
-      margin-top: 14px;
+    .buttons {
+      margin-top: 30px;
+      display: none;
     }
 
     .btn {
       display: inline-block;
-      width: 100%;
-      max-width: 360px;
-      padding: 14px 18px;
-      border-radius: 12px;
-      border: none;
-      background: linear-gradient(135deg, #6d4329, #9b6b47);
-      color: #fff7e8;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 10px 24px rgba(78,46,24,0.20);
-      margin: 6px;
-      font-family: inherit;
+      margin: 8px;
+      padding: 14px 28px;
+      background: #bdad82;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: 700;
     }
 
     .btn-secondary {
-      background: linear-gradient(135deg, #8a674d, #b0845d);
+      background: #160520;
     }
 
-    .print-note {
-      text-align: center;
-      margin-top: 8px;
-      font-size: 12px;
-      color: #f1e5d6;
-    }
-
-    @media (min-width: 980px) {
-      body { padding: 20px; }
-      .status-card { padding: 18px 22px; }
-      .status-card h1 { font-size: 30px; }
-      .status-card p { font-size: 16px; }
-      .voucher-shell { padding: 14px; border-radius: 26px; }
-      .voucher {
-        min-height: 78vh;
-        border-radius: 22px;
-        padding: 24px;
-      }
-      .voucher::before { inset: 12px; border-radius: 16px; }
-      .ornament-left, .ornament-right { font-size: 54px; }
-      .ornament-left { left: 12px; }
-      .ornament-right { right: 12px; }
-      .voucher-grid {
-        grid-template-columns: 1.65fr 0.78fr;
-        gap: 24px;
-        min-height: calc(78vh - 48px);
-      }
-      .left { padding: 10px 8px 10px 18px; }
-      .right {
-        border-top: none;
-        border-left: 2px dashed rgba(109,67,41,0.28);
-        padding: 10px 16px 10px 24px;
-      }
-      .brand-top { font-size: 18px; }
-      .brand-main { font-size: 44px; }
-      .title-gutschein { font-size: 46px; }
-      .amount-currency { font-size: 52px; }
-      .amount-value { font-size: 94px; }
-      .message-panel { min-height: 170px; padding: 20px 22px; }
-      .message-text { font-size: 28px; }
-      .fineprint { font-size: 15px; }
-      .panel-title { font-size: 18px; }
-      .detail-value { font-size: 19px; }
-      .code-value { font-size: 30px; }
-      .btn {
-        width: auto;
-        max-width: none;
-        padding: 14px 24px;
-        font-size: 17px;
-      }
-    }
-
-    @media print {
-      @page {
-        size: A4 landscape;
-        margin: 7mm;
-      }
-
-      body {
-        background: white;
-        padding: 0;
-        print-color-adjust: exact;
-        -webkit-print-color-adjust: exact;
-      }
-
-      .status-card,
-      .actions,
-      .print-note {
-        display: none !important;
-      }
-
-      .page {
-        max-width: 100%;
-        margin: 0;
-      }
-
-      .voucher-shell {
-        box-shadow: none;
-        border: 1.5px solid rgba(102,67,39,0.35);
-        padding: 6px;
-      }
-
-      .voucher {
-        min-height: 185mm;
-        padding: 18px;
-      }
-
-      .voucher-grid {
-        grid-template-columns: 1.65fr 0.78fr !important;
-        min-height: 168mm;
-      }
-
-      .right {
-        border-top: none !important;
-        border-left: 2px dashed rgba(109,67,41,0.28) !important;
-        padding-left: 20px !important;
-        padding-top: 8px !important;
-      }
-
-      .brand-main { font-size: 38px; }
-      .title-gutschein { font-size: 38px; }
-      .amount-currency { font-size: 40px; }
-      .amount-value { font-size: 74px; }
-      .message-text { font-size: 22px; }
+    .error {
+      color: #a00000;
+      font-weight: 700;
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="status-card" id="statusBox">
-      <h1>Zahlung wird geprüft...</h1>
-      <p>Bitte warten Sie einen Moment.</p>
-    </div>
+  <div class="wrap">
+    <h1>Vielen Dank für Ihre Bestellung!</h1>
 
-    <div id="voucherArea"></div>
+    <p id="statusText">Wir prüfen Ihre Zahlung ...</p>
 
-    <div class="print-note">
-      Tipp: Über „Download / Print” als PDF im Querformat speichern.
+    <div class="buttons" id="buttons">
+      <a id="downloadBtn" class="btn" href="#" target="_blank" rel="noopener">
+        Gutschein herunterladen
+      </a>
+      <a class="btn btn-secondary" href="https://www.altgrieth.de/danke">
+        Weiter zu Alt Grieth
+      </a>
     </div>
   </div>
 
   <script>
-    function escapeHtml(text) {
-      return String(text || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
-    function formatDate(value) {
-      if (!value) return "-";
-      const d = new Date(value);
-      if (isNaN(d.getTime())) return value;
-      return d.toLocaleDateString("de-DE", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric"
-      });
-    }
-
-    function goBack() {
-      window.location.href = "https://voucherfront.vercel.app";
-    }
-
-    async function checkPayment() {
-      const statusBox = document.getElementById("statusBox");
-      const voucherArea = document.getElementById("voucherArea");
-      const paymentId = localStorage.getItem("molliePaymentId");
+    async function loadPaymentStatus() {
+      const paymentId = localStorage.getItem("lastPaymentId");
+      const statusText = document.getElementById("statusText");
+      const buttons = document.getElementById("buttons");
+      const downloadBtn = document.getElementById("downloadBtn");
 
       if (!paymentId) {
-        statusBox.innerHTML = `
-          <h1>Geen payment ID</h1>
-          <p>Start de betaling opnieuw via de bestelpagina.</p>
-        `;
+        statusText.className = "error";
+        statusText.textContent = "Keine Zahlungsdaten gefunden.";
         return;
       }
 
       try {
-        const res = await fetch(
-          "https://voucherback.vercel.app/api/checkPayment?id=" + encodeURIComponent(paymentId)
-        );
-
+        const res = await fetch(`https://voucherbackend.vercel.app/api/checkpayment?id=${paymentId}`);
         const data = await res.json();
 
         if (!res.ok) {
-          throw new Error(data.error || "Fehler bei der Zahlungsprüfung");
-        }
-
-        if (data.status !== "paid") {
-          statusBox.innerHTML = `
-            <h1>Zahlung nicht abgeschlossen</h1>
-            <p>Status: <strong>${escapeHtml(data.status)}</strong></p>
-          `;
+          statusText.className = "error";
+          statusText.textContent = "Fehler beim Prüfen der Zahlung.";
           return;
         }
 
-        const messageText =
-          escapeHtml(data.message) ||
-          "Einlösbar für Speisen und Getränke im Gasthaus Alt Grieth.";
+        if (data.status === "paid") {
+          statusText.textContent =
+            "Ihre Zahlung war erfolgreich. Sie können Ihren Gutschein jetzt herunterladen und anschließend zu Alt Grieth weitergehen.";
 
-        const purchaseDate = formatDate(data.purchaseDate || data.paidAt);
-        const validUntil = formatDate(data.validUntil);
-        const paidVia = escapeHtml(data.paidVia || "Mollie");
-        const voucherCode = escapeHtml(data.voucherCode || data.invoiceReference || "-");
+          downloadBtn.href = `https://voucherbackend.vercel.app/api/generateVoucher?id=${paymentId}`;
+          buttons.style.display = "block";
+          return;
+        }
 
-        statusBox.innerHTML = `
-          <h1>Zahlung erfolgreich ✅</h1>
-          <p>Ihr Gutschein wurde erfolgreich erstellt.</p>
-        `;
+        if (data.status === "open") {
+          statusText.textContent =
+            "Ihre Zahlung ist noch nicht abgeschlossen.";
+          return;
+        }
 
-        voucherArea.innerHTML = `
-          <div class="voucher-shell">
-            <div class="voucher">
-              <div class="ornament-left">❦<br>✦<br>❦</div>
-              <div class="ornament-right">❦<br>✦<br>❦</div>
+        if (data.status === "pending") {
+          statusText.textContent =
+            "Ihre Zahlung wird noch verarbeitet.";
+          return;
+        }
 
-              <div class="voucher-grid">
-                <div class="left">
-                  <div>
-                    <div class="brand-top">Gasthaus</div>
-                    <h2 class="brand-main">Alt Grieth</h2>
-
-                    <div class="title-gutschein">Gutschein</div>
-
-                    <div class="amount-row">
-                      <span class="amount-currency">€</span>
-                      <span class="amount-value">${escapeHtml(data.amount)}</span>
-                    </div>
-
-                    <div class="message-panel">
-                      <div class="message-label">Freier Text</div>
-                      <div class="message-text">${messageText}</div>
-                    </div>
-                  </div>
-
-                  <div class="fineprint">
-                    Dieser Online-Gutschein ist nur zusammen mit der Kaufrechnung einlösbar
-                    und gültig bis <strong>${validUntil}</strong>.<br>
-                    Dieser Gutschein wurde am <strong>${purchaseDate}</strong> via <strong>${paidVia}</strong> bezahlt.<br>
-                    Rechnungsreferenz: <strong>${voucherCode}</strong>
-                  </div>
-                </div>
-
-                <div class="right">
-                  <div>
-                    <div class="panel-title">Gutschein Details</div>
-
-                    <div class="detail-box">
-                      <div class="detail-label">FÜR:</div>
-                      <div class="detail-value">${escapeHtml(data.name) || "-"}</div>
-                    </div>
-
-                    <div class="detail-box">
-                      <div class="detail-label">Kaufdatum</div>
-                      <div class="detail-value">${purchaseDate}</div>
-                    </div>
-
-                    <div class="detail-box">
-                      <div class="detail-label">Gültig bis</div>
-                      <div class="detail-value">${validUntil}</div>
-                    </div>
-                  </div>
-
-                  <div class="code-box">
-                    <div class="code-label">Voucher Code / Referenz</div>
-                    <div class="code-value">${voucherCode}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="actions">
-            <button class="btn" onclick="window.print()">Download / Print</button>
-            <button class="btn btn-secondary" onclick="goBack()">Neuen Gutschein bestellen</button>
-          </div>
-        `;
+        statusText.className = "error";
+        statusText.textContent =
+          "Die Zahlung wurde nicht erfolgreich abgeschlossen.";
       } catch (err) {
-        statusBox.innerHTML = `
-          <h1>Fehler</h1>
-          <p>${escapeHtml(err.message)}</p>
-        `;
+        statusText.className = "error";
+        statusText.textContent = "Serverfehler: " + err.message;
       }
     }
 
-    checkPayment();
+    loadPaymentStatus();
   </script>
 </body>
 </html>
