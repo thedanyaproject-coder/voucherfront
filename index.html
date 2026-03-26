@@ -13,12 +13,12 @@
       margin: 0;
       font-family: Georgia, "Times New Roman", serif;
       background:
-        radial-gradient(circle at top left, rgba(255,255,255,0.20), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(255,255,255,0.14), transparent 35%),
+        radial-gradient(circle at top left, rgba(255,255,255,0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(255,255,255,0.12), transparent 34%),
         linear-gradient(135deg, #3d2a1f, #6f4a32 45%, #2b1b13);
       color: #2d1d14;
       min-height: 100vh;
-      padding: 26px 16px;
+      padding: 28px 16px;
     }
 
     .wrap {
@@ -69,7 +69,7 @@
 
     .content {
       display: grid;
-      grid-template-columns: 1fr 1.08fr;
+      grid-template-columns: 1fr 1.05fr;
       align-items: stretch;
     }
 
@@ -196,6 +196,13 @@
       color: #8a2d20;
     }
 
+    .status.success {
+      display: block;
+      background: #eefaf0;
+      border: 1px solid #9fd1a6;
+      color: #256136;
+    }
+
     .note {
       margin-top: 14px;
       font-size: 14px;
@@ -248,7 +255,7 @@
       right: 18px;
     }
 
-    .voucher-preview .inner-border {
+    .inner-border {
       position: absolute;
       inset: 16px;
       border: 2px solid rgba(122,83,54,0.18);
@@ -590,26 +597,25 @@
 
                   <div class="code-box">
                     <div class="code-label">Voucher Code / Referenz</div>
-                    <div class="code-value" id="previewCode">20260325-0001</div>
+                    <div class="code-value" id="previewCode">20260326-0001</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-    </div>
-  </div>
+      </div><!-- content -->
+    </div><!-- card -->
+  </div><!-- wrap -->
 
   <script>
     const BACKEND_URL = "https://voucherback.vercel.app/api/createPayment";
 
     const amountButtons = document.querySelectorAll(".amount-btn");
     const customAmountInput = document.getElementById("customAmount");
-    const nameInput = document.getElementById("name");
-    const emailInput = document.getElementById("email");
-    const messageInput = document.getElementById("message");
+    const nameEl = document.getElementById("name");
+    const emailEl = document.getElementById("email");
+    const messageEl = document.getElementById("message");
     const payBtn = document.getElementById("payBtn");
     const statusBox = document.getElementById("statusBox");
 
@@ -623,13 +629,13 @@
     let selectedAmount = "25.00";
 
     function setStatus(message, type) {
+      if (!message) {
+        statusBox.className = "status";
+        statusBox.textContent = "";
+        return;
+      }
       statusBox.className = "status " + type;
       statusBox.textContent = message;
-    }
-
-    function clearStatus() {
-      statusBox.className = "status";
-      statusBox.textContent = "";
     }
 
     function formatGermanNumber(value) {
@@ -666,9 +672,9 @@
       valid.setFullYear(valid.getFullYear() + 1);
 
       previewAmount.textContent = formatGermanNumber(amount);
-      previewName.textContent = nameInput.value.trim() || "Name des Empfängers";
+      previewName.textContent = nameEl.value.trim() || "Name des Empfängers";
       previewMessage.textContent =
-        messageInput.value.trim() ||
+        messageEl.value.trim() ||
         "Einlösbar für Speisen und Getränke im Gasthaus Alt Grieth.";
       previewPurchaseDate.textContent = formatGermanDate(today);
       previewValidUntil.textContent = formatGermanDate(valid);
@@ -690,19 +696,19 @@
       updatePreview();
     });
 
-    nameInput.addEventListener("input", updatePreview);
-    messageInput.addEventListener("input", updatePreview);
+    nameEl.addEventListener("input", updatePreview);
+    messageEl.addEventListener("input", updatePreview);
 
     async function startPayment() {
-      clearStatus();
+      setStatus("", "");
 
       const amount = getCurrentAmount();
-      const name = nameInput.value.trim();
-      const email = emailInput.value.trim();
-      const message = messageInput.value.trim();
+      const name = nameEl.value.trim();
+      const email = emailEl.value.trim();
+      const message = messageEl.value.trim();
 
       if (!amount || Number(amount) <= 0) {
-        setStatus("Bitte geben Sie einen gültigen Betrag ein.", "error");
+        setStatus("Bitte einen gültigen Betrag eingeben.", "error");
         return;
       }
 
@@ -721,6 +727,7 @@
 
       try {
         localStorage.removeItem("molliePaymentId");
+        localStorage.removeItem("voucherCode");
 
         const response = await fetch(BACKEND_URL, {
           method: "POST",
@@ -731,8 +738,7 @@
             amount: Number(amount),
             name: name,
             email: email,
-            message: message,
-            description: `Gutschein Gasthaus Alt Grieth ${amount} EUR`
+            message: message
           })
         });
 
@@ -746,12 +752,15 @@
           localStorage.setItem("molliePaymentId", data.id);
         }
 
-        if (data.checkoutUrl) {
-          window.location.href = data.checkoutUrl;
-          return;
+        if (data.voucherCode) {
+          localStorage.setItem("voucherCode", data.voucherCode);
         }
 
-        throw new Error("Keine checkoutUrl vom Backend erhalten.");
+        if (!data.checkoutUrl) {
+          throw new Error("Keine checkoutUrl vom Backend erhalten.");
+        }
+
+        window.location.href = data.checkoutUrl;
       } catch (error) {
         setStatus("Fehler: " + error.message, "error");
         payBtn.disabled = false;
@@ -762,171 +771,6 @@
     payBtn.addEventListener("click", startPayment);
 
     updatePreview();
-    <script>
-  const BACKEND_URL = "https://voucherback.vercel.app/api/createPayment";
-
-  const amountButtons = document.querySelectorAll(".amount-btn");
-  const customAmountInput = document.getElementById("customAmount");
-  const nameEl = document.getElementById("name");
-  const emailEl = document.getElementById("email");
-  const messageEl = document.getElementById("message");
-  const payBtn = document.getElementById("payBtn");
-  const statusBox = document.getElementById("statusBox");
-
-  const previewAmount = document.getElementById("previewAmount");
-  const previewMessage = document.getElementById("previewMessage");
-  const previewName = document.getElementById("previewName");
-  const previewPurchaseDate = document.getElementById("previewPurchaseDate");
-  const previewValidUntil = document.getElementById("previewValidUntil");
-  const previewCode = document.getElementById("previewCode");
-
-  let selectedAmount = "25.00";
-
-  function setStatus(message, type) {
-    if (!message) {
-      statusBox.className = "status";
-      statusBox.textContent = "";
-      return;
-    }
-
-    statusBox.className = "status " + type;
-    statusBox.textContent = message;
-  }
-
-  function formatGermanNumber(value) {
-    return Number(value || 0).toFixed(2).replace(".", ",");
-  }
-
-  function formatGermanDate(date) {
-    return date.toLocaleDateString("de-DE", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric"
-    });
-  }
-
-  function getCurrentAmount() {
-    if (customAmountInput.value && Number(customAmountInput.value) > 0) {
-      return Number(customAmountInput.value).toFixed(2);
-    }
-    return selectedAmount;
-  }
-
-  function generatePreviewVoucherCode() {
-    const d = new Date();
-    const yyyy = d.getFullYear();
-    const mm = String(d.getMonth() + 1).padStart(2, "0");
-    const dd = String(d.getDate()).padStart(2, "0");
-    return `${yyyy}${mm}${dd}-0001`;
-  }
-
-  function updatePreview() {
-    const amount = getCurrentAmount();
-    const today = new Date();
-    const valid = new Date(today);
-    valid.setFullYear(valid.getFullYear() + 1);
-
-    previewAmount.textContent = formatGermanNumber(amount);
-    previewName.textContent = nameEl.value.trim() || "Name des Empfängers";
-    previewMessage.textContent =
-      messageEl.value.trim() ||
-      "Einlösbar für Speisen und Getränke im Gasthaus Alt Grieth.";
-    previewPurchaseDate.textContent = formatGermanDate(today);
-    previewValidUntil.textContent = formatGermanDate(valid);
-    previewCode.textContent = generatePreviewVoucherCode();
-  }
-
-  amountButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      amountButtons.forEach((btn) => btn.classList.remove("active"));
-      button.classList.add("active");
-      selectedAmount = button.dataset.amount;
-      customAmountInput.value = "";
-      updatePreview();
-    });
-  });
-
-  customAmountInput.addEventListener("input", () => {
-    amountButtons.forEach((btn) => btn.classList.remove("active"));
-    updatePreview();
-  });
-
-  nameEl.addEventListener("input", updatePreview);
-  messageEl.addEventListener("input", updatePreview);
-
-  async function startPayment() {
-    setStatus("", "");
-
-    const amount = getCurrentAmount();
-    const name = nameEl.value.trim();
-    const email = emailEl.value.trim();
-    const message = messageEl.value.trim();
-
-    if (!amount || Number(amount) <= 0) {
-      setStatus("Bitte einen gültigen Betrag eingeben.", "error");
-      return;
-    }
-
-    if (!name) {
-      setStatus("Bitte geben Sie an, für wen der Gutschein ist.", "error");
-      return;
-    }
-
-    if (!email) {
-      setStatus("Bitte geben Sie Ihre E-Mail-Adresse ein.", "error");
-      return;
-    }
-
-    payBtn.disabled = true;
-    payBtn.textContent = "Zahlung wird vorbereitet...";
-
-    try {
-      localStorage.removeItem("molliePaymentId");
-      localStorage.removeItem("voucherCode");
-
-      const response = await fetch(BACKEND_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          amount: Number(amount),
-          name: name,
-          email: email,
-          message: message
-        })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Fehler beim Erstellen der Zahlung.");
-      }
-
-      if (data.id) {
-        localStorage.setItem("molliePaymentId", data.id);
-      }
-
-      if (data.voucherCode) {
-        localStorage.setItem("voucherCode", data.voucherCode);
-      }
-
-      if (!data.checkoutUrl) {
-        throw new Error("Keine checkoutUrl vom Backend erhalten.");
-      }
-
-      window.location.href = data.checkoutUrl;
-    } catch (error) {
-      setStatus("Fehler: " + error.message, "error");
-      payBtn.disabled = false;
-      payBtn.textContent = "Jetzt sicher bezahlen";
-    }
-  }
-
-  payBtn.addEventListener("click", startPayment);
-
-  updatePreview();
-</script>
   </script>
 </body>
 </html>
