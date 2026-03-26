@@ -25,21 +25,21 @@
     }
 
     .page {
-      max-width: 920px;
+      max-width: 980px;
       margin: 0 auto;
-      padding: 32px 20px 48px;
+      padding: 30px 18px 45px;
     }
 
     .card {
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 28px 22px;
+      padding: 26px 22px;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
     .eyebrow {
@@ -60,22 +60,30 @@
 
     .intro {
       margin: 0 auto;
-      max-width: 620px;
+      max-width: 640px;
       line-height: 1.6;
       font-size: 16px;
     }
 
+    .layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+      margin-top: 28px;
+      align-items: start;
+    }
+
     .section-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 600;
-      margin: 24px 0 12px;
+      margin: 0 0 12px;
     }
 
     .amount-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-bottom: 8px;
+      gap: 10px;
+      margin-bottom: 12px;
     }
 
     .amount-btn {
@@ -83,11 +91,12 @@
       background: var(--white);
       color: var(--dark);
       border-radius: 8px;
-      padding: 16px 10px;
-      font-size: 18px;
+      padding: 14px 10px;
+      font-size: 17px;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s ease;
+      font-family: "Acto", Arial, sans-serif;
     }
 
     .amount-btn.active,
@@ -96,11 +105,55 @@
       color: var(--white);
     }
 
+    .custom-amount-wrap {
+      margin-bottom: 20px;
+    }
+
+    .custom-amount-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    .custom-amount-box {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--white);
+      max-width: 220px;
+    }
+
+    .custom-amount-box span {
+      padding: 0 14px;
+      font-weight: 700;
+      color: var(--dark);
+      background: #faf8f3;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .custom-amount-box input {
+      border: none;
+      outline: none;
+      width: 100%;
+      height: 48px;
+      padding: 0 14px;
+      font-size: 16px;
+      font-family: "Acto", Arial, sans-serif;
+      color: var(--dark);
+      background: var(--white);
+    }
+
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
     .field {
@@ -119,12 +172,14 @@
       color: var(--dark);
     }
 
-    input,
-    textarea {
+    input[type="text"],
+    input[type="email"],
+    textarea,
+    select {
       width: 100%;
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 14px 14px;
+      padding: 14px;
       font-size: 15px;
       font-family: "Acto", Arial, sans-serif;
       color: var(--dark);
@@ -132,8 +187,10 @@
       outline: none;
     }
 
-    input:focus,
-    textarea:focus {
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    textarea:focus,
+    select:focus {
       border-color: var(--gold);
     }
 
@@ -142,12 +199,86 @@
       resize: vertical;
     }
 
+    .preview-card {
+      position: relative;
+      min-height: 420px;
+      background: var(--white);
+      border: 1px solid var(--gold);
+      border-radius: 10px;
+      padding: 26px 22px;
+      overflow: hidden;
+    }
+
+    .preview-bg {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 170px;
+      opacity: 0.07;
+      color: var(--gold);
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .preview-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .preview-top {
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .preview-title {
+      font-size: 30px;
+      letter-spacing: 2px;
+      margin-bottom: 14px;
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    .preview-amount {
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: var(--dark);
+    }
+
+    .preview-to,
+    .preview-message,
+    .preview-code,
+    .preview-validity {
+      margin-bottom: 12px;
+      line-height: 1.5;
+      color: var(--dark);
+    }
+
+    .preview-code {
+      font-size: 13px;
+      color: #7f7152;
+      margin-top: 18px;
+    }
+
+    .preview-validity {
+      font-size: 12px;
+      opacity: 0.85;
+      margin-top: 18px;
+    }
+
     .note {
       margin-top: 18px;
       font-size: 14px;
       line-height: 1.6;
       color: var(--dark);
-      opacity: 0.9;
+      opacity: 0.92;
     }
 
     .actions {
@@ -166,6 +297,7 @@
       letter-spacing: 1px;
       cursor: pointer;
       min-width: 240px;
+      font-family: "Acto", Arial, sans-serif;
     }
 
     .pay-btn:hover {
@@ -188,27 +320,32 @@
       color: #9b1c1c;
     }
 
-    .success {
-      color: #1f6b3b;
-    }
-
     .footer-info {
       text-align: center;
-      margin-top: 22px;
+      margin-top: 20px;
       font-size: 13px;
       line-height: 1.6;
       color: var(--dark);
       opacity: 0.8;
     }
 
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-card {
+        min-height: 360px;
+      }
+    }
+
     @media (max-width: 768px) {
       .page {
-        padding: 20px 14px 30px;
+        padding: 20px 14px 28px;
       }
 
       .card {
         padding: 20px 16px;
-        border-radius: 8px;
       }
 
       h1 {
@@ -230,6 +367,14 @@
       .pay-btn {
         width: 100%;
       }
+
+      .preview-bg {
+        font-size: 130px;
+      }
+
+      .preview-amount {
+        font-size: 36px;
+      }
     }
   </style>
 </head>
@@ -240,52 +385,94 @@
         <div class="eyebrow">Gasthaus Alt Grieth</div>
         <h1>GUTSCHEIN BESTELLEN</h1>
         <p class="intro">
-          Wählen Sie Ihren Wunschbetrag und gestalten Sie Ihren Gutschein mit einer persönlichen Nachricht.
+          Wählen Sie einen Betrag, fügen Sie eine persönliche Nachricht hinzu und gestalten Sie Ihren Gutschein ganz individuell.
         </p>
       </div>
 
-      <div>
-        <div class="section-title">Wunschbetrag wählen</div>
-        <div class="amount-grid">
-          <button type="button" class="amount-btn" data-amount="25">€ 25</button>
-          <button type="button" class="amount-btn active" data-amount="50">€ 50</button>
-          <button type="button" class="amount-btn" data-amount="75">€ 75</button>
-          <button type="button" class="amount-btn" data-amount="100">€ 100</button>
+      <div class="layout">
+        <div>
+          <div class="section-title">Wunschbetrag wählen</div>
+
+          <div class="amount-grid">
+            <button type="button" class="amount-btn" data-amount="25">€ 25</button>
+            <button type="button" class="amount-btn active" data-amount="50">€ 50</button>
+            <button type="button" class="amount-btn" data-amount="75">€ 75</button>
+            <button type="button" class="amount-btn" data-amount="100">€ 100</button>
+          </div>
+
+          <input type="hidden" id="amount" value="50" />
+
+          <div class="custom-amount-wrap">
+            <label class="custom-amount-label" for="customAmount">Oder eigenen Betrag eingeben</label>
+            <div class="custom-amount-box">
+              <span>€</span>
+              <input id="customAmount" type="number" min="1" step="1" placeholder="z. B. 60" />
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="name">Name des Empfängers</label>
+              <input id="name" type="text" placeholder="z. B. Anna Müller" />
+            </div>
+
+            <div class="field">
+              <label for="email">E-Mail des Käufers</label>
+              <input id="email" type="email" placeholder="ihre@email.de" />
+            </div>
+
+            <div class="field full">
+              <label for="message">Persönliche Nachricht (optional)</label>
+              <textarea id="message" placeholder="Ihr persönlicher Gruß ..."></textarea>
+            </div>
+
+            <div class="field full">
+              <label for="iconChoice">Hintergrundsymbol wählen</label>
+              <select id="iconChoice">
+                <option value="">Kein Symbol</option>
+                <option value="heart">Herz</option>
+                <option value="flowers">Blumen</option>
+                <option value="gift">Geschenk</option>
+                <option value="stars">Sterne</option>
+                <option value="ornament">Ornament</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="note">
+            Der Gutschein ist 1 Jahr ab Kaufdatum gültig. Zur Einlösung ist nur der Gutschein selbst erforderlich.
+          </div>
+
+          <div class="actions">
+            <button id="payBtn" class="pay-btn" type="button" onclick="startPayment()">
+              JETZT BEZAHLEN
+            </button>
+          </div>
+
+          <div id="statusMessage" class="status"></div>
+
+          <div class="footer-info">
+            Sichere Online-Zahlung über Mollie
+          </div>
         </div>
-        <input type="hidden" id="amount" value="50" />
-      </div>
 
-      <div class="form-grid">
-        <div class="field">
-          <label for="name">Name des Empfängers</label>
-          <input id="name" type="text" placeholder="z. B. Anna Müller" />
+        <div>
+          <div class="section-title">Vorschau</div>
+
+          <div class="preview-card">
+            <div class="preview-bg" id="previewBg"></div>
+
+            <div class="preview-content">
+              <div class="preview-top">Gasthaus Alt Grieth</div>
+              <div class="preview-title">GUTSCHEIN</div>
+              <div class="preview-amount" id="previewAmount">€ 50</div>
+              <div class="preview-to" id="previewTo">Für: –</div>
+              <div class="preview-message" id="previewMessage">Ihre persönliche Nachricht erscheint hier.</div>
+              <div class="preview-code" id="previewCode">Gutscheincode wird nach erfolgreicher Zahlung erstellt.</div>
+              <div class="preview-validity">Gültig 1 Jahr ab Kaufdatum</div>
+            </div>
+          </div>
         </div>
-
-        <div class="field">
-          <label for="email">E-Mail des Käufers</label>
-          <input id="email" type="email" placeholder="ihre@email.de" />
-        </div>
-
-        <div class="field full">
-          <label for="message">Persönliche Nachricht (optional)</label>
-          <textarea id="message" placeholder="Ihr persönlicher Gruß ..."></textarea>
-        </div>
-      </div>
-
-      <div class="note">
-        Der Gutschein ist 1 Jahr ab Kaufdatum gültig. Zur Einlösung ist nur der Gutschein selbst erforderlich.
-      </div>
-
-      <div class="actions">
-        <button id="payBtn" class="pay-btn" type="button" onclick="startPayment()">
-          JETZT BEZAHLEN
-        </button>
-      </div>
-
-      <div id="statusMessage" class="status"></div>
-
-      <div class="footer-info">
-        Sichere Online-Zahlung über Mollie
       </div>
     </div>
   </div>
@@ -293,16 +480,62 @@
   <script>
     const amountButtons = document.querySelectorAll(".amount-btn");
     const amountInput = document.getElementById("amount");
+    const customAmountInput = document.getElementById("customAmount");
     const statusMessage = document.getElementById("statusMessage");
     const payBtn = document.getElementById("payBtn");
+
+    const previewAmount = document.getElementById("previewAmount");
+    const previewTo = document.getElementById("previewTo");
+    const previewMessage = document.getElementById("previewMessage");
+    const previewBg = document.getElementById("previewBg");
+
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const messageInput = document.getElementById("message");
+    const iconChoiceInput = document.getElementById("iconChoice");
+
+    const iconMap = {
+      "": "",
+      heart: "♥",
+      flowers: "✿",
+      gift: "🎁",
+      stars: "✦",
+      ornament: "❦"
+    };
+
+    function updatePreview() {
+      const customAmount = customAmountInput.value.trim();
+      const selectedAmount = customAmount ? customAmount : amountInput.value;
+      previewAmount.textContent = `€ ${selectedAmount || "0"}`;
+
+      const recipient = nameInput.value.trim();
+      previewTo.textContent = recipient ? `Für: ${recipient}` : "Für: –";
+
+      const msg = messageInput.value.trim();
+      previewMessage.textContent = msg ? msg : "Ihre persönliche Nachricht erscheint hier.";
+
+      const iconChoice = iconChoiceInput.value;
+      previewBg.textContent = iconMap[iconChoice] || "";
+    }
 
     amountButtons.forEach((button) => {
       button.addEventListener("click", () => {
         amountButtons.forEach((btn) => btn.classList.remove("active"));
         button.classList.add("active");
         amountInput.value = button.dataset.amount;
+        customAmountInput.value = "";
+        updatePreview();
       });
     });
+
+    customAmountInput.addEventListener("input", () => {
+      amountButtons.forEach((btn) => btn.classList.remove("active"));
+      updatePreview();
+    });
+
+    nameInput.addEventListener("input", updatePreview);
+    messageInput.addEventListener("input", updatePreview);
+    iconChoiceInput.addEventListener("change", updatePreview);
 
     function showStatus(message, type = "") {
       statusMessage.className = "status";
@@ -310,13 +543,19 @@
       statusMessage.textContent = message;
     }
 
-    function validateForm() {
-      const amount = amountInput.value.trim();
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
+    function getFinalAmount() {
+      const customAmount = customAmountInput.value.trim();
+      if (customAmount) return customAmount;
+      return amountInput.value.trim();
+    }
 
-      if (!amount) {
-        showStatus("Bitte wählen Sie einen Betrag.", "error");
+    function validateForm() {
+      const finalAmount = Number(getFinalAmount());
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+
+      if (!finalAmount || isNaN(finalAmount) || finalAmount <= 0) {
+        showStatus("Bitte geben Sie einen gültigen Betrag ein.", "error");
         return false;
       }
 
@@ -336,10 +575,11 @@
     async function startPayment() {
       if (!validateForm()) return;
 
-      const amount = document.getElementById("amount").value;
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const message = document.getElementById("message").value.trim();
+      const amount = getFinalAmount();
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const message = messageInput.value.trim();
+      const iconChoice = iconChoiceInput.value;
 
       showStatus("Ihre Zahlung wird vorbereitet ...");
       payBtn.disabled = true;
@@ -354,7 +594,8 @@
             amount,
             name,
             email,
-            message
+            message,
+            iconChoice
           })
         });
 
@@ -370,6 +611,7 @@
         localStorage.setItem("lastVoucherCode", data.voucherCode || "");
         localStorage.setItem("lastVoucherEmail", email);
         localStorage.setItem("lastVoucherName", name);
+        localStorage.setItem("lastVoucherIcon", iconChoice || "");
 
         if (data.checkoutUrl) {
           window.location.href = data.checkoutUrl;
@@ -382,6 +624,8 @@
         payBtn.disabled = false;
       }
     }
+
+    updatePreview();
   </script>
 </body>
 </html>
