@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gutschein – Gasthaus Alt Grieth</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     html, body {
       margin: 0;
@@ -22,7 +20,7 @@
         linear-gradient(135deg, #3d2a1f, #6f4a32 45%, #2b1b13);
       color: #2d1d14;
       min-height: 100vh;
-      padding: 20px;
+      padding: 14px;
     }
 
     .page {
@@ -32,36 +30,35 @@
 
     .status-card {
       background: rgba(255, 250, 240, 0.98);
-      border-radius: 18px;
-      padding: 18px 22px;
+      border-radius: 16px;
+      padding: 16px 18px;
       text-align: center;
-      margin-bottom: 18px;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.24);
+      margin-bottom: 14px;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.22);
     }
 
     .status-card h1 {
-      margin: 0 0 8px;
-      font-size: 30px;
+      margin: 0 0 6px;
+      font-size: 24px;
       color: #4a2e1d;
     }
 
     .status-card p {
       margin: 0;
-      font-size: 16px;
+      font-size: 14px;
       color: #6b4a36;
     }
 
     .voucher-shell {
       background: linear-gradient(180deg, #f8eed6 0%, #efdfba 100%);
-      border-radius: 26px;
-      padding: 14px;
+      border-radius: 22px;
+      padding: 10px;
       border: 2px solid rgba(102, 67, 39, 0.28);
-      box-shadow: 0 22px 52px rgba(0,0,0,0.26);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.22);
     }
 
     .voucher {
       position: relative;
-      min-height: 78vh;
       background:
         linear-gradient(rgba(252,246,230,0.97), rgba(244,233,205,0.97)),
         repeating-linear-gradient(
@@ -71,17 +68,17 @@
           transparent 2px,
           transparent 7px
         );
-      border-radius: 22px;
-      padding: 24px;
+      border-radius: 18px;
+      padding: 16px;
       overflow: hidden;
     }
 
     .voucher::before {
       content: "";
       position: absolute;
-      inset: 12px;
-      border: 2px solid rgba(122,83,54,0.22);
-      border-radius: 16px;
+      inset: 10px;
+      border: 2px solid rgba(122,83,54,0.18);
+      border-radius: 12px;
       pointer-events: none;
     }
 
@@ -90,69 +87,57 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      color: rgba(122,83,54,0.16);
-      font-size: 54px;
+      color: rgba(122,83,54,0.14);
+      font-size: 34px;
       line-height: 1.1;
       pointer-events: none;
       user-select: none;
       z-index: 0;
     }
 
-    .ornament-left {
-      left: 12px;
-    }
-
-    .ornament-right {
-      right: 12px;
-    }
+    .ornament-left { left: 6px; }
+    .ornament-right { right: 6px; }
 
     .voucher-grid {
       position: relative;
       z-index: 1;
       display: grid;
-      grid-template-columns: 1.65fr 0.78fr;
-      gap: 24px;
-      min-height: calc(78vh - 48px);
+      grid-template-columns: 1fr;
+      gap: 16px;
     }
 
-    .left {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 10px 8px 10px 18px;
+    .left, .right {
+      padding: 8px 10px;
     }
 
     .right {
-      border-left: 2px dashed rgba(109,67,41,0.28);
-      padding: 10px 16px 10px 24px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      border-top: 2px dashed rgba(109,67,41,0.24);
+      padding-top: 16px;
     }
 
     .brand-top {
-      font-size: 18px;
-      letter-spacing: 5px;
+      font-size: 14px;
+      letter-spacing: 4px;
       color: #7a5336;
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
     .brand-main {
       margin: 0;
-      font-size: 44px;
-      line-height: 1.03;
+      font-size: 28px;
+      line-height: 1.05;
       text-transform: uppercase;
       color: #4a2e1d;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
     }
 
     .title-gutschein {
-      font-size: 46px;
-      letter-spacing: 3px;
+      font-size: 32px;
+      letter-spacing: 2px;
       color: #7a5336;
       text-transform: uppercase;
-      margin: 22px 0 14px;
+      margin: 14px 0 10px;
       font-weight: bold;
     }
 
@@ -160,45 +145,43 @@
       display: flex;
       justify-content: center;
       align-items: baseline;
-      gap: 14px;
-      margin: 8px 0 20px;
+      gap: 10px;
+      margin: 8px 0 16px;
       color: #6d4329;
       text-shadow: 0 2px 0 rgba(255,255,255,0.55);
     }
 
     .amount-currency {
-      font-size: 52px;
+      font-size: 28px;
       font-weight: bold;
-      line-height: 1;
     }
 
     .amount-value {
-      font-size: 94px;
+      font-size: 56px;
       font-weight: bold;
-      line-height: 0.95;
+      line-height: 1;
     }
 
     .message-panel {
       background: rgba(255,255,255,0.42);
       border: 1px solid rgba(109,67,41,0.16);
-      border-radius: 18px;
-      padding: 20px 22px;
-      min-height: 170px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      border-radius: 16px;
+      padding: 14px 16px;
+      min-height: 120px;
     }
 
-    .message-label {
-      font-size: 12px;
+    .message-label,
+    .detail-label,
+    .code-label {
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: #8a674d;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
 
     .message-text {
-      font-size: 28px;
+      font-size: 18px;
       line-height: 1.5;
       color: #5a3928;
       white-space: pre-wrap;
@@ -206,40 +189,32 @@
     }
 
     .fineprint {
-      margin-top: 18px;
-      padding-top: 14px;
+      margin-top: 14px;
+      padding-top: 12px;
       border-top: 1px solid rgba(109,67,41,0.18);
-      font-size: 15px;
+      font-size: 13px;
       color: #7a5a45;
-      line-height: 1.8;
+      line-height: 1.7;
     }
 
     .panel-title {
-      font-size: 18px;
+      font-size: 15px;
       color: #4a2e1d;
       letter-spacing: 2px;
       text-transform: uppercase;
-      margin: 2px 0 16px;
+      margin: 2px 0 12px;
     }
 
     .detail-box {
       background: rgba(255,255,255,0.56);
       border: 1px solid rgba(109,67,41,0.14);
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 14px;
-    }
-
-    .detail-label {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #8a674d;
-      margin-bottom: 6px;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
     }
 
     .detail-value {
-      font-size: 19px;
+      font-size: 16px;
       line-height: 1.4;
       color: #4a2e1d;
       word-break: break-word;
@@ -248,23 +223,15 @@
     .code-box {
       background: linear-gradient(135deg, #6d4329, #8f603c);
       color: #fff7ea;
-      border-radius: 18px;
-      padding: 18px 16px;
-      box-shadow: 0 10px 24px rgba(78,46,24,0.18);
+      border-radius: 16px;
+      padding: 16px 14px;
+      box-shadow: 0 8px 18px rgba(78,46,24,0.16);
       text-align: center;
-      margin-top: 6px;
-    }
-
-    .code-label {
-      font-size: 12px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      opacity: 0.9;
-      margin-bottom: 8px;
+      margin-top: 4px;
     }
 
     .code-value {
-      font-size: 30px;
+      font-size: 22px;
       line-height: 1.2;
       font-weight: bold;
       letter-spacing: 1px;
@@ -273,20 +240,22 @@
 
     .actions {
       text-align: center;
-      margin-top: 18px;
+      margin-top: 14px;
     }
 
     .btn {
       display: inline-block;
-      padding: 14px 24px;
+      width: 100%;
+      max-width: 360px;
+      padding: 14px 18px;
       border-radius: 12px;
       border: none;
       background: linear-gradient(135deg, #6d4329, #9b6b47);
       color: #fff7e8;
-      font-size: 17px;
+      font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 10px 24px rgba(78,46,24,0.24);
+      box-shadow: 0 10px 24px rgba(78,46,24,0.20);
       margin: 6px;
       font-family: inherit;
     }
@@ -297,49 +266,53 @@
 
     .print-note {
       text-align: center;
-      margin-top: 10px;
-      font-size: 13px;
+      margin-top: 8px;
+      font-size: 12px;
       color: #f1e5d6;
     }
 
-    @media (max-width: 980px) {
-      .voucher-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .right {
-        border-left: none;
-        border-top: 2px dashed rgba(109,67,41,0.28);
-        padding-left: 18px;
-        padding-top: 20px;
-      }
-
-      .brand-main {
-        font-size: 34px;
-      }
-
-      .title-gutschein {
-        font-size: 34px;
-      }
-
-      .amount-currency {
-        font-size: 36px;
-      }
-
-      .amount-value {
-        font-size: 64px;
-      }
-
-      .message-text {
-        font-size: 22px;
-      }
-
+    @media (min-width: 980px) {
+      body { padding: 20px; }
+      .status-card { padding: 18px 22px; }
+      .status-card h1 { font-size: 30px; }
+      .status-card p { font-size: 16px; }
+      .voucher-shell { padding: 14px; border-radius: 26px; }
       .voucher {
-        min-height: auto;
+        min-height: 78vh;
+        border-radius: 22px;
+        padding: 24px;
       }
-
+      .voucher::before { inset: 12px; border-radius: 16px; }
+      .ornament-left, .ornament-right { font-size: 54px; }
+      .ornament-left { left: 12px; }
+      .ornament-right { right: 12px; }
       .voucher-grid {
-        min-height: auto;
+        grid-template-columns: 1.65fr 0.78fr;
+        gap: 24px;
+        min-height: calc(78vh - 48px);
+      }
+      .left { padding: 10px 8px 10px 18px; }
+      .right {
+        border-top: none;
+        border-left: 2px dashed rgba(109,67,41,0.28);
+        padding: 10px 16px 10px 24px;
+      }
+      .brand-top { font-size: 18px; }
+      .brand-main { font-size: 44px; }
+      .title-gutschein { font-size: 46px; }
+      .amount-currency { font-size: 52px; }
+      .amount-value { font-size: 94px; }
+      .message-panel { min-height: 170px; padding: 20px 22px; }
+      .message-text { font-size: 28px; }
+      .fineprint { font-size: 15px; }
+      .panel-title { font-size: 18px; }
+      .detail-value { font-size: 19px; }
+      .code-value { font-size: 30px; }
+      .btn {
+        width: auto;
+        max-width: none;
+        padding: 14px 24px;
+        font-size: 17px;
       }
     }
 
@@ -347,11 +320,6 @@
       @page {
         size: A4 landscape;
         margin: 7mm;
-      }
-
-      html, body {
-        width: auto;
-        height: auto;
       }
 
       body {
@@ -376,7 +344,6 @@
         box-shadow: none;
         border: 1.5px solid rgba(102,67,39,0.35);
         padding: 6px;
-        break-inside: avoid;
       }
 
       .voucher {
@@ -385,28 +352,22 @@
       }
 
       .voucher-grid {
+        grid-template-columns: 1.65fr 0.78fr !important;
         min-height: 168mm;
       }
 
-      .brand-main {
-        font-size: 38px;
+      .right {
+        border-top: none !important;
+        border-left: 2px dashed rgba(109,67,41,0.28) !important;
+        padding-left: 20px !important;
+        padding-top: 8px !important;
       }
 
-      .title-gutschein {
-        font-size: 38px;
-      }
-
-      .amount-currency {
-        font-size: 40px;
-      }
-
-      .amount-value {
-        font-size: 74px;
-      }
-
-      .message-text {
-        font-size: 22px;
-      }
+      .brand-main { font-size: 38px; }
+      .title-gutschein { font-size: 38px; }
+      .amount-currency { font-size: 40px; }
+      .amount-value { font-size: 74px; }
+      .message-text { font-size: 22px; }
     }
   </style>
 </head>
